@@ -129,7 +129,7 @@ To customize the workflow, copy the agent files into your workspace and edit the
 #### PowerShell
 
 ```powershell
-$dest = ".github\agents\rpi-workflow"
+$dest = ".github\agents"
 New-Item -ItemType Directory -Path $dest -Force
 
 $base = "https://raw.githubusercontent.com/AndyElessar/skills/main/plugins/rpi-workflow/agents"
@@ -145,7 +145,7 @@ $base = "https://raw.githubusercontent.com/AndyElessar/skills/main/plugins/rpi-w
 #### Bash
 
 ```bash
-dest=".github/agents/rpi-workflow"
+dest=".github/agents"
 mkdir -p "$dest"
 
 base="https://raw.githubusercontent.com/AndyElessar/skills/main/plugins/rpi-workflow/agents"
@@ -156,7 +156,7 @@ done
 
 ### Step 2: Edit the Copies
 
-Edit files under `.github/agents/rpi-workflow/` as needed:
+Edit files under `.github/agents/` as needed:
 
 - Add tools — e.g. append `browser` to the Implementor's `tools:` list.
 - Change model — update any agent's `model:` field.
