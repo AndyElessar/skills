@@ -18,9 +18,11 @@ The orchestrator provides:
 - Research findings from `/memories/session/rpi/research.md`.
 - User feedback when iterating on a rejected plan.
 
+> **Memory access**: All `/memories/session/rpi/` paths must be read and written using the #tool:vscode/memory tool. Standard file tools (#tool:read) cannot access memory paths.
+
 ## Approach
 
-1. Read the task goal and research findings from the provided context or from memory.
+1. Read the task goal and research findings from the provided context or from memory using the #tool:vscode/memory tool.
 2. Identify implementation objectives:
    - Distinguish user-stated requirements from planner-derived objectives.
    - Map each objective to supporting research evidence.
@@ -40,8 +42,8 @@ The orchestrator provides:
 
 #### Step 1: Gather Context
 
-1. Read the task goal from `/memories/session/rpi/goal.md`.
-2. Read the research findings from `/memories/session/rpi/research.md`.
+1. Read the task goal from `/memories/session/rpi/goal.md` using the #tool:vscode/memory tool.
+2. Read the research findings from `/memories/session/rpi/research.md` using the #tool:vscode/memory tool.
 3. Read user feedback when iterating on a rejected plan.
 4. Identify gaps where research is insufficient for planning.
 
@@ -99,8 +101,8 @@ When planning reveals decisions requiring user input:
 ### Phase 4: Completion
 
 1. Replace all `{{}}` template markers.
-2. Save the completed plan to `/memories/session/rpi/plan.md` using the memory tool.
-3. Save the planning log to `/memories/session/rpi/plan-log.md` using the memory tool.
+2. Save the completed plan to `/memories/session/rpi/plan.md` using the #tool:vscode/memory tool.
+3. Save the planning log to `/memories/session/rpi/plan-log.md` using the #tool:vscode/memory tool.
 
 ## Implementation Plan Template
 
@@ -230,6 +232,7 @@ Save to `/memories/session/rpi/plan-log.md` using this structure:
 
 - DO NOT modify any codebase files. This agent is read-only.
 - DO NOT create or edit files outside `/memories/session/rpi/`.
+- ALWAYS use the #tool:vscode/memory tool to read from and write to `/memories/session/rpi/`. Standard file tools cannot access memory paths.
 - DO NOT implement anything. Only plan.
 - DO NOT speculate beyond what research supports. Flag unknowns as open questions.
 - ALWAYS ground plan steps in research findings or codebase evidence.

@@ -19,6 +19,8 @@ The orchestrator provides:
 - Research findings from `/memories/session/rpi/research.md`.
 - Prior changes from `/memories/session/rpi/changes.md` when resuming.
 
+> **Memory access**: All `/memories/session/rpi/` paths must be read and written using the #tool:vscode/memory tool. Standard file tools (#tool:read, #tool:edit) cannot access memory paths.
+
 ## Approach
 
 1. Read the assigned phase details from the provided context.
@@ -38,9 +40,9 @@ The orchestrator provides:
 
 ### Phase 1: Load Phase Context
 
-1. Read the assigned phase section from the plan in `/memories/session/rpi/plan.md`.
-2. Read the research findings from `/memories/session/rpi/research.md` for broader context.
-3. Read any prior changes from `/memories/session/rpi/changes.md` to understand completed work.
+1. Read the assigned phase section from the plan in `/memories/session/rpi/plan.md` using the #tool:vscode/memory tool.
+2. Read the research findings from `/memories/session/rpi/research.md` using the #tool:vscode/memory tool.
+3. Read any prior changes from `/memories/session/rpi/changes.md` using the #tool:vscode/memory tool to understand completed work.
 4. Read applicable instruction files under `.github/instructions/` by matching `applyTo` patterns against files targeted by this phase.
 5. Understand the scope, file targets, and success criteria for this phase.
 
@@ -70,7 +72,7 @@ When validation commands are specified in the plan:
 
 ### Phase 4: Report and Persist
 
-1. Append this phase's changes to `/memories/session/rpi/changes.md` using the Changes Log Format.
+1. Append this phase's changes to `/memories/session/rpi/changes.md` using the #tool:vscode/memory tool, following the Changes Log Format.
 2. Return the structured completion report using the Output format.
 
 ## Changes Log Format

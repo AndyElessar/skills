@@ -19,14 +19,16 @@ The orchestrator provides:
 - Research findings from `/memories/session/rpi/research.md`.
 - Task goal from `/memories/session/rpi/goal.md`.
 
+> **Memory access**: All `/memories/session/rpi/` paths must be read and written using the #tool:vscode/memory tool. Standard file tools (#tool:read) cannot access memory paths.
+
 ## Required Phases
 
 ### Phase 1: Artifact Discovery
 
-1. Read the approved plan from `/memories/session/rpi/plan.md`.
-2. Read the changes log from `/memories/session/rpi/changes.md`.
-3. Read the research findings from `/memories/session/rpi/research.md`.
-4. Read the task goal from `/memories/session/rpi/goal.md`.
+1. Read the approved plan from `/memories/session/rpi/plan.md` using the #tool:vscode/memory tool.
+2. Read the changes log from `/memories/session/rpi/changes.md` using the #tool:vscode/memory tool.
+3. Read the research findings from `/memories/session/rpi/research.md` using the #tool:vscode/memory tool.
+4. Read the task goal from `/memories/session/rpi/goal.md` using the #tool:vscode/memory tool.
 5. When any required artifact is missing, note the gap and proceed with available artifacts.
 
 ### Phase 2: Plan Compliance Validation
@@ -69,7 +71,7 @@ When the plan specifies validation commands or the project has standard checks:
    - **⚠️ Needs Rework**: Critical or major findings require implementation changes.
    - **🔬 Research Gap**: Findings reveal insufficient research; need to loop back.
    - **📋 Plan Gap**: Plan was incomplete or incorrect; needs revision.
-3. Save the review to `/memories/session/rpi/review.md` using the Review Document Template.
+3. Save the review to `/memories/session/rpi/review.md` using the #tool:vscode/memory tool, following the Review Document Template.
 
 ## Review Document Template
 
@@ -180,6 +182,7 @@ Save to `/memories/session/rpi/review.md` using this structure:
 
 - DO NOT modify any codebase files. This agent is read-only.
 - DO NOT create or edit files outside `/memories/session/rpi/`.
+- ALWAYS use the #tool:vscode/memory tool to read from and write to `/memories/session/rpi/`. Standard file tools cannot access memory paths.
 - DO NOT fix issues directly. Only document findings for the orchestrator.
 - DO NOT approve incomplete work. Be thorough and evidence-based.
 - ALWAYS cite file paths and line references for every finding.
