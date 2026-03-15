@@ -1,7 +1,7 @@
 ---
 name: RPI Planner
 description: "Planning subagent for the RPI Orchestrator. Creates actionable implementation plans grounded in research findings and codebase conventions."
-tools: [vscode/memory, read, agent, search, web, github/get_commit, github/get_file_contents, github/get_label, github/get_latest_release, github/get_release_by_tag, github/get_tag, github/issue_read, github/pull_request_read, github/search_code, github/search_issues, github/search_pull_requests, github/search_repositories, aspire/get_integration_docs, aspire/list_apphosts, aspire/list_console_logs, aspire/list_integrations, aspire/list_resources, aspire/list_structured_logs, aspire/list_trace_structured_logs, aspire/list_traces, aspire/select_apphost, 'io.github.upstash/context7/*', 'microsoftdocs/mcp/*', github.vscode-pull-request-github/issue_fetch, github.vscode-pull-request-github/labels_fetch, github.vscode-pull-request-github/notification_fetch, github.vscode-pull-request-github/doSearch, github.vscode-pull-request-github/activePullRequest, github.vscode-pull-request-github/pullRequestStatusChecks, github.vscode-pull-request-github/openPullRequest]
+tools: [vscode/memory, vscode/askQuestions, read, search, web]
 user-invocable: false
 model: Claude Opus 4.6 (copilot)
 ---
@@ -91,9 +91,10 @@ When competing approaches exist:
 
 When planning reveals decisions requiring user input:
 
-1. Present questions using the Planning Decisions format in the Output section.
-2. When research evidence is sufficient, record the decision and rationale.
-3. Deferred questions use the recommendation as default, noted in the plan.
+1. Use #tool:vscode/askQuestions to present questions directly to the user, using the Planning Decisions format from the Output section.
+2. Wait for the user's response before finalizing the affected plan section.
+3. When research evidence is sufficient and the choice is unambiguous, record the decision and rationale without asking.
+4. Deferred questions use the recommendation as default, noted in the plan.
 
 ### Phase 4: Completion
 

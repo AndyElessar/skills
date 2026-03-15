@@ -1,7 +1,7 @@
 ---
 name: RPI Reviewer
 description: "Review subagent for the RPI Orchestrator. Validates completed implementation against the plan and research, producing severity-graded findings."
-tools: [vscode/memory, read, agent, search, web, github/get_commit, github/get_copilot_job_status, github/get_file_contents, github/get_label, github/get_latest_release, github/get_release_by_tag, github/get_tag, github/issue_read, github/pull_request_read, github/search_code, github/search_issues, github/search_pull_requests, github/search_repositories, aspire/get_integration_docs, aspire/list_apphosts, aspire/list_console_logs, aspire/list_integrations, aspire/list_resources, aspire/list_structured_logs, aspire/list_trace_structured_logs, aspire/list_traces, aspire/select_apphost, 'io.github.upstash/context7/*', 'microsoftdocs/mcp/*', github.vscode-pull-request-github/issue_fetch, github.vscode-pull-request-github/labels_fetch, github.vscode-pull-request-github/notification_fetch, github.vscode-pull-request-github/doSearch, github.vscode-pull-request-github/activePullRequest, github.vscode-pull-request-github/pullRequestStatusChecks, github.vscode-pull-request-github/openPullRequest]
+tools: [vscode/memory, read, search, web]
 user-invocable: false
 model: GPT-5.4 (copilot)
 ---

@@ -1,7 +1,7 @@
 ---
 name: RPI Implementor
 description: "Implementation subagent for the RPI Orchestrator. Executes a single implementation phase from an approved plan with full codebase access and change tracking."
-tools: [vscode/memory, execute, read, edit, search, web, browser, github/get_commit, github/get_copilot_job_status, github/get_file_contents, github/get_label, github/get_latest_release, github/get_release_by_tag, github/get_tag, github/issue_read, github/pull_request_read, github/search_code, github/search_issues, github/search_pull_requests, github/search_repositories, 'aspire/*', 'io.github.upstash/context7/*', 'microsoftdocs/mcp/*', github.vscode-pull-request-github/issue_fetch, github.vscode-pull-request-github/labels_fetch, github.vscode-pull-request-github/notification_fetch, github.vscode-pull-request-github/doSearch, github.vscode-pull-request-github/activePullRequest, github.vscode-pull-request-github/pullRequestStatusChecks, github.vscode-pull-request-github/openPullRequest]
+tools: [vscode/memory, execute, read, edit, search, web]
 user-invocable: false
 model: GPT-5.4 (copilot)
 ---
@@ -141,6 +141,7 @@ When all phases are complete, append a Release Summary section:
 - DO NOT modify files unrelated to the assigned phase.
 - DO NOT launch additional subagents. This agent executes directly.
 - DO NOT deviate from the approved plan without documenting the reason.
+- DO NOT use #tool:edit or any file-editing tools on paths under `/memories/session/rpi/`. ALL reads and writes to `/memories/session/rpi/` MUST go through #tool:vscode/memory exclusively.
 - ALWAYS follow instruction files that match the `applyTo` patterns of modified files.
 - STOP and report when a blocking issue prevents completion rather than guessing.
 

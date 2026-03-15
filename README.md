@@ -1,6 +1,6 @@
 # skills
 
-Plugin marketplace for AI agent skills and workflows.
+Copilot plugin marketplace, including dotnet, meta-prompts, etc.
 
 ## Plugins
 
