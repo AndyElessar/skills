@@ -1,0 +1,17 @@
+{
+  "name": "dotnet",
+  "description": "Skills for .NET development, including Aspire distributed-app orchestration, debugging, and documentation.",
+  "version": "1.0.0",
+  "repository": "https://github.com/AndyElessar/skills",
+  "license": "MIT",
+  "keywords": [
+    "dotnet",
+    "aspire",
+    "csharp"
+  ],
+  "category": "development",
+  "author": {
+    "name": "Andy Elessar",
+    "email": "andy090517@gmail.com"
+  }
+}

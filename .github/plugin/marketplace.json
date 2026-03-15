@@ -1,0 +1,89 @@
+{
+  "name": "andyelessar-skills",
+  "metadata": {
+    "description": "Collection of plugins, agents, prompts, and skills for AI agents.",
+    "version": "1.0.0",
+    "pluginRoot": "./plugins"
+  },
+  "owner": {
+    "name": "Andy Elessar",
+    "email": "andy090517@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "meta-prompts",
+      "description": "Skills for creating, reviewing, rewriting agent prompts — including agent/plugin file authoring and PROSE methodology guidance.",
+      "version": "1.0.0",
+      "repository": "https://github.com/AndyElessar/skills",
+      "license": "MIT",
+      "keywords": ["agents", "prompts", "meta", "prose"],
+      "category": "development",
+      "source": "./plugins/meta-prompts"
+    },
+    {
+      "name": "agents-creator",
+      "description": "Create, review, rewrite, and debug repository-specific agents.md, .github/agents/*.md, and *.agent.md files.",
+      "version": "1.0.0",
+      "repository": "https://github.com/AndyElessar/skills",
+      "license": "MIT",
+      "keywords": ["agents", "copilot", "prompts", "instructions"],
+      "category": "development",
+      "skills": "./skills",
+      "source": "./plugins/agents-creator"
+    },
+    {
+      "name": "plugin-creator",
+      "description": "Create and maintain GitHub Copilot CLI plugins and marketplaces, including plugin.json and marketplace.json manifests.",
+      "version": "1.0.0",
+      "repository": "https://github.com/AndyElessar/skills",
+      "license": "MIT",
+      "keywords": ["plugin", "marketplace", "copilot", "manifest"],
+      "category": "development",
+      "skills": "./skills",
+      "source": "./plugins/plugin-creator"
+    },
+    {
+      "name": "prose-guide",
+      "description": "Guide AI-native development with the PROSE methodology, including context engineering, agent primitives, and spec-driven workflows.",
+      "version": "1.0.0",
+      "repository": "https://github.com/AndyElessar/skills",
+      "license": "CC-BY-NC-SA-4.0",
+      "keywords": ["prose", "ai-native", "agents", "workflows"],
+      "category": "development",
+      "skills": "./skills",
+      "source": "./plugins/prose-guide"
+    },
+    {
+      "name": "dotnet",
+      "description": "Skills for .NET development, including Aspire distributed-app orchestration, debugging, and documentation.",
+      "version": "1.0.0",
+      "repository": "https://github.com/AndyElessar/skills",
+      "license": "MIT",
+      "keywords": ["dotnet", "aspire", "csharp"],
+      "category": "development",
+      "source": "./plugins/dotnet"
+    },
+    {
+      "name": "aspire-dev",
+      "description": "Guide .NET Aspire development, including AppHost setup, integrations, runtime operations, debugging, logs, and distributed traces.",
+      "version": "1.0.0",
+      "repository": "https://github.com/AndyElessar/skills",
+      "license": "MIT",
+      "keywords": ["dotnet", "aspire", "apphost", "csharp"],
+      "category": "development",
+      "skills": "./skills",
+      "source": "./plugins/aspire-dev"
+    },
+    {
+      "name": "rpi-workflow",
+      "description": "Agents for RPI workflow — orchestrator, planner, researcher, implementor, and reviewer — using VS Code memory to manage workflow tasks.",
+      "version": "1.0.0",
+      "repository": "https://github.com/AndyElessar/skills",
+      "license": "MIT",
+      "keywords": ["rpi", "workflow", "agents"],
+      "category": "workflow",
+      "agents": "./agents",
+      "source": "./plugins/rpi-workflow"
+    }
+  ]
+}

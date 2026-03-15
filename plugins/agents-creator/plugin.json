@@ -1,0 +1,19 @@
+{
+  "name": "agents-creator",
+  "description": "Create, review, rewrite, and debug repository-specific agents.md, .github/agents/*.md, and *.agent.md files.",
+  "version": "1.0.0",
+  "repository": "https://github.com/AndyElessar/skills",
+  "license": "MIT",
+  "keywords": [
+    "agents",
+    "copilot",
+    "prompts",
+    "instructions"
+  ],
+  "category": "development",
+  "author": {
+    "name": "Andy Elessar",
+    "email": "andy090517@gmail.com"
+  },
+  "skills": "./skills"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "prose-guide",
+  "description": "Guide AI-native development with the PROSE methodology, including context engineering, agent primitives, and spec-driven workflows.",
+  "version": "1.0.0",
+  "repository": "https://github.com/AndyElessar/skills",
+  "license": "CC-BY-NC-SA-4.0",
+  "keywords": [
+    "prose",
+    "ai-native",
+    "agents",
+    "workflows"
+  ],
+  "category": "development",
+  "author": {
+    "name": "Andy Elessar",
+    "email": "andy090517@gmail.com"
+  },
+  "skills": "./skills"
+}

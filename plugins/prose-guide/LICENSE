@@ -1,0 +1,18 @@
+# License for `plugins/prose-guide`
+
+This license file applies only to the contents of `plugins/prose-guide/`.
+
+Unless a file in this directory states otherwise, the contents of this directory are adapted from:
+
+- **PROSE for AI Native Development**
+- Source: [danielmeppiel/awesome-ai-native](https://github.com/danielmeppiel/awesome-ai-native)
+- Copyright © 2025 Daniel Meppiel
+
+This plugin repackages and adapts that material for distribution as a GitHub Copilot CLI plugin. Changes may include packaging, restructuring, formatting, and marketplace integration.
+
+Unless otherwise noted, the contents of `plugins/prose-guide/` are licensed under:
+
+**Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**  
+[https://creativecommons.org/licenses/by-nc-sa/4.0/](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+The repository root `LICENSE` does not apply to this directory.

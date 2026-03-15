@@ -1,0 +1,10 @@
+# dotnet related files
+**/bin/
+**/obj/
+
+# macOS system files
+.DS_Store
+*.tmp
+
+node_modules/
+.venv/

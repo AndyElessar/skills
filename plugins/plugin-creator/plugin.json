@@ -1,0 +1,19 @@
+{
+  "name": "plugin-creator",
+  "description": "Create and maintain GitHub Copilot CLI plugins and marketplaces, including plugin.json and marketplace.json manifests.",
+  "version": "1.0.0",
+  "repository": "https://github.com/AndyElessar/skills",
+  "license": "MIT",
+  "keywords": [
+    "plugin",
+    "marketplace",
+    "copilot",
+    "manifest"
+  ],
+  "category": "development",
+  "author": {
+    "name": "Andy Elessar",
+    "email": "andy090517@gmail.com"
+  },
+  "skills": "./skills"
+}
