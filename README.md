@@ -1,6 +1,6 @@
 # skills
 
-Copilot plugin marketplace, including dotnet, meta-prompts, etc.
+Plugin marketplace for **GitHub Copilot CLI** and **Claude Code**, including dotnet, meta-prompts, etc.
 
 ## Plugins
 
@@ -8,7 +8,7 @@ Copilot plugin marketplace, including dotnet, meta-prompts, etc.
 | --- | --- | --- | --- |
 | `meta-prompts` | `MIT` | `agents`, `prompts`, `meta`, `prose` | Skills for creating, reviewing, rewriting agent prompts — including agent/plugin file authoring and PROSE methodology guidance. |
 | `agents-creator` | `MIT` | `agents`, `copilot`, `prompts`, `instructions` | Create, review, rewrite, and debug repository-specific `agents.md`, `.github/agents/*.md`, and `*.agent.md` files. |
-| `plugin-creator` | `MIT` | `plugin`, `marketplace`, `copilot`, `manifest` | Create and maintain GitHub Copilot CLI plugins and marketplaces, including `plugin.json` and `marketplace.json` manifests. |
+| `plugin-creator` | `MIT` | `plugin`, `marketplace`, `copilot`, `manifest` | Create and maintain GitHub Copilot CLI and Claude Code plugins and marketplaces, including `plugin.json` and `marketplace.json` manifests for both platforms. |
 | `prose-guide` | `CC-BY-NC-SA-4.0` | `prose`, `ai-native`, `agents`, `workflows` | Guide AI-native development with the PROSE methodology, including context engineering, agent primitives, and spec-driven workflows. |
 | `dotnet` | `MIT` | `dotnet`, `aspire`, `csharp` | Skills for .NET development, including Aspire distributed-app orchestration, debugging, and documentation. |
 | `aspire-dev` | `MIT` | `dotnet`, `aspire`, `apphost`, `csharp` | Guide .NET Aspire development, including AppHost setup, integrations, runtime operations, debugging, logs, and distributed traces. |
@@ -16,19 +16,30 @@ Copilot plugin marketplace, including dotnet, meta-prompts, etc.
 
 ## Installation
 
-### Add and browse marketplace
+### Copilot CLI
 
 ```bash
+# Add and browse marketplace
 copilot plugin marketplace add AndyElessar/skills
 copilot plugin marketplace list
 copilot plugin marketplace browse andyelessar-skills
-```
 
-### Install a plugin from this marketplace
-
-```bash
+# Install a plugin
 copilot plugin install plugin-creator@andyelessar-skills
 copilot plugin list
+```
+
+### Claude Code
+
+```bash
+# Add marketplace (in-session)
+/plugin marketplace add AndyElessar/skills
+
+# Install a plugin
+/plugin install plugin-creator@andyelessar-skills
+
+# Or load directly from local path during development
+claude --plugin-dir ./plugins/plugin-creator
 ```
 
 ## License
