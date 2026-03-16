@@ -1,13 +1,13 @@
 {
   "name": "andyelessar-skills",
+  "owner": {
+    "name": "Andy Elessar",
+    "email": "andy090517@gmail.com"
+  },
   "metadata": {
     "description": "Collection of plugins, agents, prompts, and skills for AI agents.",
     "version": "1.0.0",
     "pluginRoot": "./plugins"
-  },
-  "owner": {
-    "name": "Andy Elessar",
-    "email": "andy090517@gmail.com"
   },
   "plugins": [
     {
@@ -16,7 +16,12 @@
       "version": "1.0.0",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
-      "keywords": ["agents", "prompts", "meta", "prose"],
+      "keywords": [
+        "agents",
+        "prompts",
+        "meta",
+        "prose"
+      ],
       "category": "development",
       "source": "./plugins/meta-prompts"
     },
@@ -26,7 +31,12 @@
       "version": "1.0.0",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
-      "keywords": ["agents", "copilot", "prompts", "instructions"],
+      "keywords": [
+        "agents",
+        "copilot",
+        "prompts",
+        "instructions"
+      ],
       "category": "development",
       "skills": "./skills",
       "source": "./plugins/agents-creator"
@@ -37,7 +47,12 @@
       "version": "1.1.0",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
-      "keywords": ["plugin", "marketplace", "copilot", "manifest"],
+      "keywords": [
+        "plugin",
+        "marketplace",
+        "copilot",
+        "manifest"
+      ],
       "category": "development",
       "skills": "./skills",
       "source": "./plugins/plugin-creator"
@@ -48,7 +63,12 @@
       "version": "1.0.0",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "CC-BY-NC-SA-4.0",
-      "keywords": ["prose", "ai-native", "agents", "workflows"],
+      "keywords": [
+        "prose",
+        "ai-native",
+        "agents",
+        "workflows"
+      ],
       "category": "development",
       "skills": "./skills",
       "source": "./plugins/prose-guide"
@@ -59,7 +79,11 @@
       "version": "1.0.0",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
-      "keywords": ["dotnet", "aspire", "csharp"],
+      "keywords": [
+        "dotnet",
+        "aspire",
+        "csharp"
+      ],
       "category": "development",
       "source": "./plugins/dotnet"
     },
@@ -69,7 +93,12 @@
       "version": "1.0.0",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
-      "keywords": ["dotnet", "aspire", "apphost", "csharp"],
+      "keywords": [
+        "dotnet",
+        "aspire",
+        "apphost",
+        "csharp"
+      ],
       "category": "development",
       "skills": "./skills",
       "source": "./plugins/aspire-dev"
@@ -80,7 +109,11 @@
       "version": "1.1.0",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
-      "keywords": ["rpi", "workflow", "agents"],
+      "keywords": [
+        "rpi",
+        "workflow",
+        "agents"
+      ],
       "category": "workflow",
       "agents": "./agents",
       "source": "./plugins/rpi-workflow"

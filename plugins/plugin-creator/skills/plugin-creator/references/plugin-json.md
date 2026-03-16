@@ -1,8 +1,10 @@
 # plugin.json Reference
 
-Complete schema reference for the Copilot CLI plugin manifest file.
+Complete schema reference for the plugin manifest file used by both **Copilot CLI** and **Claude Code**.
 
-> **Source**: https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-plugin-reference#pluginjson
+> **Sources**:
+> - Copilot CLI: https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-plugin-reference#pluginjson
+> - Claude Code: https://code.claude.com/docs/en/plugins
 
 ## Table of Contents
 
@@ -12,16 +14,37 @@ Complete schema reference for the Copilot CLI plugin manifest file.
 - [Component Path Fields](#component-path-fields)
 - [Full Example](#full-example)
 - [Validation Rules](#validation-rules)
+- [Platform Differences](#platform-differences)
 
 ---
 
 ## Overview
 
-Every plugin must contain a `plugin.json` manifest at the root of the plugin directory. The CLI looks for this file at:
+Every plugin must contain a `plugin.json` manifest. The location differs by platform:
+
+### Copilot CLI
+
+Looks for the manifest at (in order):
 
 - `plugin.json` (root of plugin directory)
 - `.github/plugin/plugin.json`
 - `.claude-plugin/plugin.json`
+
+### Claude Code
+
+Looks for the manifest at:
+
+- `.claude-plugin/plugin.json` (inside the plugin directory)
+
+⚠️ **Claude Code**: Only `plugin.json` goes inside `.claude-plugin/`. Do **not** put `commands/`, `agents/`, `skills/`, or `hooks/` inside `.claude-plugin/` — those belong at the plugin root.
+
+### Dual-platform
+
+To support both platforms, place `plugin.json` at:
+- `<plugin-dir>/plugin.json` → Copilot CLI
+- `<plugin-dir>/.claude-plugin/plugin.json` → Claude Code
+
+Both files can have identical content.
 
 ---
 
@@ -29,7 +52,7 @@ Every plugin must contain a `plugin.json` manifest at the root of the plugin dir
 
 | Field | Type | Description |
 |---|---|---|
-| `name` | `string` | Kebab-case plugin name. Only letters, numbers, and hyphens. Max 64 characters. |
+| `name` | `string` | Kebab-case plugin name. Only letters, numbers, and hyphens. Max 64 characters. Used as skill namespace in Claude Code (e.g., `/my-plugin:hello`). |
 
 ---
 
@@ -37,7 +60,7 @@ Every plugin must contain a `plugin.json` manifest at the root of the plugin dir
 
 | Field | Type | Description |
 |---|---|---|
-| `description` | `string` | Brief description of the plugin. Max 1024 characters. |
+| `description` | `string` | Brief description of the plugin. Max 1024 characters. Shown in plugin manager. |
 | `version` | `string` | Semantic version (e.g., `"1.0.0"`). |
 | `author` | `object` | Author information. See [Author Object](#author-object). |
 | `homepage` | `string` | Plugin homepage URL. |
@@ -65,16 +88,17 @@ These tell the CLI where to find plugin components. All are optional. The CLI us
 |---|---|---|---|
 | `agents` | `string \| string[]` | `agents/` | Path(s) to agent directories containing `.agent.md` files. |
 | `skills` | `string \| string[]` | `skills/` | Path(s) to skill directories containing `SKILL.md` files. |
-| `commands` | `string \| string[]` | — | Path(s) to command directories. |
-| `hooks` | `string \| object` | — | Path to a hooks config file (e.g., `"hooks.json"`), or an inline hooks object. |
-| `mcpServers` | `string \| object` | — | Path to an MCP config file (e.g., `".mcp.json"`), or inline server definitions. |
-| `lspServers` | `string \| object` | — | Path to an LSP config file (e.g., `"lsp.json"`), or inline server definitions. |
+| `commands` | `string \| string[]` | `commands/` | Path(s) to command directories (Markdown files). |
+| `hooks` | `string \| object` | — | Path to a hooks config file (e.g., `"hooks.json"`) or an inline hooks object. Claude Code convention: `hooks/hooks.json`. |
+| `mcpServers` | `string \| object` | — | Path to an MCP config file (e.g., `".mcp.json"`) or inline server definitions. |
+| `lspServers` | `string \| object` | — | Path to an LSP config file (e.g., `".lsp.json"` for Claude Code, `"lsp.json"` for Copilot CLI) or inline server definitions. |
 
 **Path resolution:**
 - Paths are relative to the plugin root directory
 - Use a single string for one directory: `"agents/"`
 - Use an array for multiple directories: `["skills/", "extra-skills/"]`
 - If omitted, the CLI checks the default directory (e.g., `agents/` for agents)
+- **Claude Code**: Use `${CLAUDE_PLUGIN_ROOT}` in hooks and MCP server configs to reference files within the plugin's cached installation directory
 
 ---
 
@@ -101,7 +125,7 @@ These tell the CLI where to find plugin components. All are optional. The CLI us
   "commands": "commands/",
   "hooks": "hooks.json",
   "mcpServers": ".mcp.json",
-  "lspServers": "lsp.json"
+  "lspServers": ".lsp.json"
 }
 ```
 
@@ -115,4 +139,38 @@ These tell the CLI where to find plugin components. All are optional. The CLI us
 4. **`description`** max length: 1024 characters
 5. **`version`** should follow semantic versioning (`MAJOR.MINOR.PATCH`)
 6. Component path fields must point to existing directories or files within the plugin
-7. When installing via marketplace, fields in `marketplace.json` plugin entries take priority over `plugin.json`
+7. When installing via marketplace, fields in `marketplace.json` plugin entries take priority over `plugin.json` (Copilot CLI) or supplement/override depending on `strict` mode (Claude Code)
+8. **Claude Code**: Run `claude plugin validate .` or `/plugin validate .` to check for errors
+
+---
+
+## Platform Differences
+
+| Aspect | Copilot CLI | Claude Code |
+|---|---|---|
+| **Manifest location** | `plugin.json` at plugin root | `.claude-plugin/plugin.json` |
+| **Hooks convention** | `hooks.json` at root | `hooks/hooks.json` |
+| **LSP config** | `lsp.json` or `.github/lsp.json` | `.lsp.json` |
+| **Commands** | `commands/` | `commands/` |
+| **Settings** | — | `settings.json` (default agent, tool restrictions) |
+| **Path variable** | — | `${CLAUDE_PLUGIN_ROOT}` for hooks/MCP paths |
+| **Validation** | — | `claude plugin validate .` |
+| **Marketplace authority** | Marketplace entry always takes priority | Controlled by `strict` field |
+
+### Claude Code: settings.json
+
+Claude Code plugins can include a `settings.json` at the plugin root to set defaults when the plugin is enabled:
+
+```json
+{
+  "agent": "security-reviewer"
+}
+```
+
+This activates a custom agent as the main thread, applying its system prompt, tool restrictions, and model. Takes priority over `plugin.json` settings.
+
+### Claude Code: strict mode interaction
+
+When installed via a marketplace:
+- **`strict: true`** (default) — `plugin.json` is the authority for component definitions. The marketplace entry can add supplementary components; both sources are merged.
+- **`strict: false`** — The marketplace entry is the entire plugin definition. If `plugin.json` also declares components, it creates a conflict and the plugin fails to load.
