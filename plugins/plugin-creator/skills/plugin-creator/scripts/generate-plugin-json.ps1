@@ -86,7 +86,7 @@ while ($currentDir) {
 }
 
 if (-not $repoRoot) {
-    Write-Error "Repository root not found from script path: $PSScriptRoot"
+    throw "Repository root not found from script path: $PSScriptRoot. Expected to find .github/plugin/marketplace.json in this repository."
 }
 
 if (-not $MarketplacePath) {
