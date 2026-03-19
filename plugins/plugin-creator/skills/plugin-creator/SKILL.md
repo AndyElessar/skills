@@ -328,20 +328,20 @@ For the full loading order diagram and file locations, see [references/cli-comma
 
 ## Automation Scripts
 
-> **Source**: [`scripts/generate-plugin-json.ps1`](./scripts/generate-plugin-json.ps1)
+> **Entry point**: [`eng/generate-plugin-json.ps1`](../../../../eng/generate-plugin-json.ps1)
 
 Reads `marketplace.json` and generates manifests for **both platforms** from a single source of truth. Edit metadata in `marketplace.json`, then run the script to sync everything.
 
 ```powershell
 # Preview what would be generated (no files written)
-.\eng\generate-plugin-json.ps1 -DryRun
+./eng/generate-plugin-json.ps1 -DryRun
 
 # Generate / overwrite all manifests for both platforms
-.\eng\generate-plugin-json.ps1 -Force
+./eng/generate-plugin-json.ps1 -Force
 
 # Generate only for one platform
-.\eng\generate-plugin-json.ps1 -Force -Target Copilot
-.\eng\generate-plugin-json.ps1 -Force -Target Claude
+./eng/generate-plugin-json.ps1 -Force -Target Copilot
+./eng/generate-plugin-json.ps1 -Force -Target Claude
 ```
 
 Run after adding or updating plugin entries in `marketplace.json`, or in CI to keep manifests in sync. The script generates `plugin.json` at plugin root (Copilot), `.claude-plugin/plugin.json` per plugin (Claude), and `.claude-plugin/marketplace.json` at repo root (Claude).

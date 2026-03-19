@@ -33,22 +33,22 @@
 
 .EXAMPLE
     # Run from repo root — generates for both platforms
-    .\eng\generate-plugin-json.ps1
+    ./eng/generate-plugin-json.ps1
 
     # Dry-run to preview output
-    .\eng\generate-plugin-json.ps1 -DryRun
+    ./eng/generate-plugin-json.ps1 -DryRun
 
     # Force overwrite without confirmation
-    .\eng\generate-plugin-json.ps1 -Force
+    ./eng/generate-plugin-json.ps1 -Force
 
     # Generate only Copilot CLI manifests
-    .\eng\generate-plugin-json.ps1 -Force -Target Copilot
+    ./eng/generate-plugin-json.ps1 -Force -Target Copilot
 
     # Generate only Claude Code manifests
-    .\eng\generate-plugin-json.ps1 -Force -Target Claude
+    ./eng/generate-plugin-json.ps1 -Force -Target Claude
 
     # Custom marketplace path
-    .\eng\generate-plugin-json.ps1 -MarketplacePath .\custom\marketplace.json
+    ./eng/generate-plugin-json.ps1 -MarketplacePath ./custom/marketplace.json
 #>
 
 [CmdletBinding()]
@@ -72,8 +72,22 @@ $ErrorActionPreference = 'Stop'
 
 # ── Resolve paths ───────────────────────────────────────────────────────────
 
-# PSScriptRoot is the eng/ folder → parent is the repo root
-$repoRoot = Split-Path -Parent $PSScriptRoot
+# Walk upward until the repository root is found
+$repoRoot = $null
+$currentDir = Get-Item -LiteralPath $PSScriptRoot
+
+while ($currentDir) {
+    if (Test-Path (Join-Path $currentDir.FullName '.github' 'plugin' 'marketplace.json')) {
+        $repoRoot = $currentDir.FullName
+        break
+    }
+
+    $currentDir = $currentDir.Parent
+}
+
+if (-not $repoRoot) {
+    Write-Error "Repository root not found from script path: $PSScriptRoot"
+}
 
 if (-not $MarketplacePath) {
     $MarketplacePath = Join-Path $repoRoot '.github' 'plugin' 'marketplace.json'

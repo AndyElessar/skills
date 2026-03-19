@@ -213,4 +213,4 @@ When multiple sources provide components with the same name, the CLI resolves co
 | MCP config | `.mcp.json`, `.vscode/mcp.json`, `.github/mcp.json` | `.mcp.json` |
 | LSP config | `lsp.json` or `.github/lsp.json` | `.lsp.json` |
 | Settings | — | `settings.json` (default agent, etc.) |
-| Automation scripts | `eng/generate-plugin-json.ps1` | `eng/generate-plugin-json.ps1` |
+| Automation scripts | [`eng/generate-plugin-json.ps1`](../../../../../eng/generate-plugin-json.ps1) | [`eng/generate-plugin-json.ps1`](../../../../../eng/generate-plugin-json.ps1) |
