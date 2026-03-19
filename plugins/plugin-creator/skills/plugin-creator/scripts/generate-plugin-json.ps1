@@ -32,23 +32,23 @@
       Claude  - Generate only Claude Code manifests (.claude-plugin/plugin.json + marketplace.json)
 
 .EXAMPLE
-    # Run from repo root — generates for both platforms
-    .\eng\generate-plugin-json.ps1
+    # Run from the plugin-creator skill directory — generates for both platforms
+    ./scripts/generate-plugin-json.ps1
 
     # Dry-run to preview output
-    .\eng\generate-plugin-json.ps1 -DryRun
+    ./scripts/generate-plugin-json.ps1 -DryRun
 
     # Force overwrite without confirmation
-    .\eng\generate-plugin-json.ps1 -Force
+    ./scripts/generate-plugin-json.ps1 -Force
 
     # Generate only Copilot CLI manifests
-    .\eng\generate-plugin-json.ps1 -Force -Target Copilot
+    ./scripts/generate-plugin-json.ps1 -Force -Target Copilot
 
     # Generate only Claude Code manifests
-    .\eng\generate-plugin-json.ps1 -Force -Target Claude
+    ./scripts/generate-plugin-json.ps1 -Force -Target Claude
 
     # Custom marketplace path
-    .\eng\generate-plugin-json.ps1 -MarketplacePath .\custom\marketplace.json
+    ./scripts/generate-plugin-json.ps1 -MarketplacePath ./custom/marketplace.json
 #>
 
 [CmdletBinding()]
@@ -72,8 +72,23 @@ $ErrorActionPreference = 'Stop'
 
 # ── Resolve paths ───────────────────────────────────────────────────────────
 
-# PSScriptRoot is the eng/ folder → parent is the repo root
-$repoRoot = Split-Path -Parent $PSScriptRoot
+# Walk upward until we find a directory containing .github/plugin/marketplace.json
+# and treat that directory as the repository root for this script.
+$repoRoot = $null
+$currentDir = Get-Item -LiteralPath $PSScriptRoot
+
+while ($currentDir) {
+    if (Test-Path (Join-Path $currentDir.FullName '.github' 'plugin' 'marketplace.json')) {
+        $repoRoot = $currentDir.FullName
+        break
+    }
+
+    $currentDir = $currentDir.Parent
+}
+
+if (-not $repoRoot) {
+    throw "No ancestor directory containing .github/plugin/marketplace.json was found when walking up from script path: $PSScriptRoot."
+}
 
 if (-not $MarketplacePath) {
     $MarketplacePath = Join-Path $repoRoot '.github' 'plugin' 'marketplace.json'

@@ -1,1 +1,1 @@
-c:/Users/andy0/source/repos/skills/plugins/plugin-creator/skills/plugin-creator/scripts/generate-plugin-json.ps1
+../plugins/plugin-creator/skills/plugin-creator/scripts/generate-plugin-json.ps1
