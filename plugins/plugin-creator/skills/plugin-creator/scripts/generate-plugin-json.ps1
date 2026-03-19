@@ -72,7 +72,8 @@ $ErrorActionPreference = 'Stop'
 
 # ── Resolve paths ───────────────────────────────────────────────────────────
 
-# Walk upward until the repository root is found
+# Walk upward until we find a directory containing .github/plugin/marketplace.json
+# and treat that directory as the repository root for this script.
 $repoRoot = $null
 $currentDir = Get-Item -LiteralPath $PSScriptRoot
 
@@ -86,7 +87,7 @@ while ($currentDir) {
 }
 
 if (-not $repoRoot) {
-    throw "Repository root not found from script path: $PSScriptRoot. Expected to find .github/plugin/marketplace.json in this repository."
+    throw "No ancestor directory containing .github/plugin/marketplace.json was found when walking up from script path: $PSScriptRoot."
 }
 
 if (-not $MarketplacePath) {
