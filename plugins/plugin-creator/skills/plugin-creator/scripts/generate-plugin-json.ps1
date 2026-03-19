@@ -32,23 +32,23 @@
       Claude  - Generate only Claude Code manifests (.claude-plugin/plugin.json + marketplace.json)
 
 .EXAMPLE
-    # Run from repo root — generates for both platforms
-    ./eng/generate-plugin-json.ps1
+    # Run from the plugin-creator skill directory — generates for both platforms
+    ./scripts/generate-plugin-json.ps1
 
     # Dry-run to preview output
-    ./eng/generate-plugin-json.ps1 -DryRun
+    ./scripts/generate-plugin-json.ps1 -DryRun
 
     # Force overwrite without confirmation
-    ./eng/generate-plugin-json.ps1 -Force
+    ./scripts/generate-plugin-json.ps1 -Force
 
     # Generate only Copilot CLI manifests
-    ./eng/generate-plugin-json.ps1 -Force -Target Copilot
+    ./scripts/generate-plugin-json.ps1 -Force -Target Copilot
 
     # Generate only Claude Code manifests
-    ./eng/generate-plugin-json.ps1 -Force -Target Claude
+    ./scripts/generate-plugin-json.ps1 -Force -Target Claude
 
     # Custom marketplace path
-    ./eng/generate-plugin-json.ps1 -MarketplacePath ./custom/marketplace.json
+    ./scripts/generate-plugin-json.ps1 -MarketplacePath ./custom/marketplace.json
 #>
 
 [CmdletBinding()]
