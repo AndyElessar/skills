@@ -109,14 +109,12 @@ Only the **RPI Orchestrator** should be invoked directly. The other four agents 
 ## Quick Start
 
 1. Open a workspace in VS Code.
-2. Start a chat and select `@RPI Orchestrator`.
+2. Start a chat and select `RPI Orchestrator` agent.
 3. Describe your task — the orchestrator handles the rest:
    - Runs research, presents a summary.
    - Creates a plan, presents it for your **explicit approval**.
    - Implements in phases, tracks all changes.
    - Reviews the result and recommends the next action.
-
-No manual `/clear` or phase switching required.
 
 ---
 

@@ -66,12 +66,19 @@ The orchestrator provides:
 1. Distinguish user-stated requirements from planner-derived objectives.
 2. Map each objective to supporting research evidence.
 3. Break work into sequential phases with clear boundaries and parallelization markers.
-4. Specify exact file paths, function names, and line references where available.
-5. Identify dependencies between phases.
-6. Define success criteria traceable to research or user requirements.
-7. Populate the Discrepancy Log with unaddressed research items and deviations.
-8. Populate the Implementation Paths Considered section.
-9. Populate the Suggested Follow-On Work section.
+4. Apply phase granularity rules:
+   - Each phase should contain no more than 5 steps.
+   - Each step should affect no more than 3 files.
+   - When a phase exceeds these limits, split it into smaller sub-phases with explicit dependencies.
+5. Apply the Parallelization Design criteria when marking phases.
+6. Specify exact file paths, function names, and line references where available.
+7. For each step, specify the file operation type (Create, Modify, Remove), target line ranges when modifying existing code, inter-step dependencies, and tracing back to research findings.
+8. Identify dependencies between phases.
+9. Define success criteria traceable to research or user requirements.
+10. Apply the Quality Standards checklist before finalizing each phase.
+11. Populate the Discrepancy Log with unaddressed research items and deviations.
+12. Populate the Implementation Paths Considered section.
+13. Populate the Suggested Follow-On Work section.
 
 #### Step 3: Evaluate Implementation Paths
 
@@ -147,9 +154,17 @@ Save to `/memories/session/rpi/plan.md` using this structure:
 
 * [ ] Step 1.1: {{specific_action_1_1}}
   * Files: {{target_file_paths}}
+  * Line references: {{start_line}}-{{end_line}} (when modifying existing code)
+  * Operation: {{Create | Modify | Remove}}
+  * Dependencies: {{step_or_phase_ids_this_depends_on, or "None"}}
+  * Research reference: {{research.md section or DR-/DD- ID}}
   * Success criteria: {{step_completion_criteria}}
 * [ ] Step 1.2: {{specific_action_1_2}}
   * Files: {{target_file_paths}}
+  * Line references: {{start_line}}-{{end_line}} (when modifying existing code)
+  * Operation: {{Create | Modify | Remove}}
+  * Dependencies: {{step_or_phase_ids_this_depends_on, or "None"}}
+  * Research reference: {{research.md section or DR-/DD- ID}}
   * Success criteria: {{step_completion_criteria}}
 * [ ] Step 1.3: Validate phase changes
   * Run lint and build commands for modified files
@@ -160,6 +175,10 @@ Save to `/memories/session/rpi/plan.md` using this structure:
 
 * [ ] Step 2.1: {{specific_action_2_1}}
   * Files: {{target_file_paths}}
+  * Line references: {{start_line}}-{{end_line}} (when modifying existing code)
+  * Operation: {{Create | Modify | Remove}}
+  * Dependencies: {{step_or_phase_ids_this_depends_on, or "None"}}
+  * Research reference: {{research.md section or DR-/DD- ID}}
   * Success criteria: {{step_completion_criteria}}
 
 ### [ ] Implementation Phase N: Validation
@@ -227,6 +246,57 @@ Save to `/memories/session/rpi/plan-log.md` using this structure:
   * Source: {{where_identified}}
   * Dependency: {{what_must_complete_first}}
 ```
+
+## Parallelization Design
+
+When marking phases with `<!-- parallelizable: true/false -->`, apply these criteria:
+
+### Parallelizable (true)
+
+A phase may be marked parallelizable when ALL of the following hold:
+
+- The phase does not read files written by another in-flight phase.
+- The phase does not depend on validation results from another in-flight phase.
+- The phase targets a disjoint set of files from other in-flight phases.
+
+### Not Parallelizable (false)
+
+Mark a phase as non-parallelizable when ANY of the following apply:
+
+- It modifies files also targeted by a prior phase.
+- It depends on runtime output (build artifacts, generated code) from a prior phase.
+- It requires validation of prior phase results before proceeding.
+
+### Validation Strategy for Parallel Phases
+
+When parallel phases complete:
+
+1. Run validation commands that cover all files modified across the parallel batch.
+2. If a conflict is detected (e.g., merge conflict in a shared file), re-run the conflicting phases sequentially.
+3. Record parallel execution outcomes in the Changes Log for reviewer traceability.
+
+## Quality Standards
+
+Apply this checklist to every plan phase before finalizing. Each step must satisfy all applicable items:
+
+| Standard | Requirement | Example |
+|---|---|---|
+| Actionable verbs | Every step title starts with a concrete verb | "Add error handling to…", "Remove deprecated…", "Update schema in…" |
+| Exact paths | Every step specifies full workspace-relative file paths | `src/components/Auth.tsx`, not "the auth component" |
+| Measurable criteria | Each success criterion is verifiable without subjective judgment | "File compiles without errors", "Endpoint returns 200", not "works correctly" |
+| Discrepancy tracing | Every DR-/DD- ID in plan-log.md maps to a plan step or explicit exclusion rationale | DR-01 → excluded because out of scope (documented) |
+| Line references | When modifying existing code, include start and end line numbers from current file state | Lines 42-58 |
+| Operation type | Each step declares Create, Modify, or Remove | "Operation: Modify" |
+
+## Resumption
+
+When the orchestrator re-delegates planning (iteration or resumed session):
+
+1. Read existing `/memories/session/rpi/plan.md` and `/memories/session/rpi/plan-log.md` using the #tool:vscode/memory tool.
+2. Read any user feedback provided by the orchestrator.
+3. Identify which plan sections need revision versus sections that remain valid.
+4. Update only the affected sections. Preserve unchanged content and append an iteration header: `## Iteration {{N}} — {{focus}}`.
+5. Update the Discrepancy Log in `plan-log.md` to reflect any resolved or new discrepancies.
 
 ## Constraints
 

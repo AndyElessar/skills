@@ -20,15 +20,24 @@ The orchestrator provides:
 
 > **Memory access**: All `/memories/session/rpi/` paths must be read and written using the #tool:vscode/memory tool. Standard file tools (#tool:read) cannot access memory paths.
 
+## Tool Selection Guide
+
+| Tool | When to Use |
+|------|-------------|
+| #tool:search | Find patterns, symbols, or keywords across the local codebase |
+| #tool:read | Read specific files for detailed analysis (code, config, instructions) |
+| #tool:web | Fetch official documentation, API references, package registries, or external guides |
+| #tool:browser | Navigate interactive web pages, content behind login walls, or pages requiring JavaScript rendering |
+| #tool:vscode/memory | Read/write all `/memories/session/rpi/` paths (the only tool that can access memory) |
+
 ## Approach
 
 1. Read the task goal from the provided context or from `/memories/session/rpi/goal.md` using the #tool:vscode/memory tool.
 2. Identify research questions: what needs to be understood before planning can begin?
-3. Investigate each question:
-   - Use #tool:search and #tool:read tools for local codebase patterns, conventions, architecture, and existing implementations.
-   - Use #tool:web tools for external documentation, APIs, libraries, or framework references.
-4. Synthesize findings into a structured research document.
-5. Save the consolidated research to `/memories/session/rpi/research.md` using the #tool:vscode/memory tool.
+3. Investigate each question using the Tool Selection Guide above.
+4. Stay within the original research scope. Record tangential discoveries in "Potential Next Research" rather than pursuing them.
+5. Synthesize findings into a structured research document.
+6. Save the consolidated research to `/memories/session/rpi/research.md` using the #tool:vscode/memory tool.
 
 ## Required Phases
 
@@ -46,8 +55,18 @@ Define research scope, explicit questions, and potential risks.
 
 1. Use search and read tools for local codebase investigation (patterns, conventions, architecture, existing implementations).
 2. Use web and fetch tools for external documentation, APIs, libraries, or framework references.
-3. Follow up on discoveries that directly relate to the original research scope.
+3. Follow up on discoveries that directly relate to the original research scope. Discoveries beyond the original scope go into "Potential Next Research" rather than being pursued immediately.
 4. Stop investigating when the original questions have sufficient evidence.
+
+#### Research Sufficiency Checklist
+
+Before proceeding to Step 3, verify all of the following:
+
+- Every research question has at least one source-backed answer (codebase file with line range, or external URL).
+- The recommended approach includes a concrete code example or file reference from the codebase.
+- No unanswered question would block the Planner from creating an actionable plan.
+
+If any item fails, return to Step 2 for targeted investigation of the gap.
 
 #### Step 3: Consolidate Findings
 
@@ -170,6 +189,14 @@ Save to `/memories/session/rpi/research.md` using the following structure. Repla
 {{file_tree_changes}}
 \`\`\`
 
+**Architecture / Flow Diagram:**
+
+\`\`\`mermaid
+{{mermaid_diagram}}
+\`\`\`
+
+> Include a Mermaid diagram when the scenario involves multi-component interaction, data flow across boundaries, or state transitions. Omit for trivial single-file changes.
+
 **Implementation Details:**
 
 {{details}}
@@ -192,6 +219,15 @@ Save to `/memories/session/rpi/research.md` using the following structure. Repla
 
 * {{question_requiring_user_input}}
 ```
+
+## Resumption
+
+When the orchestrator re-delegates research (iteration or resumed session):
+
+1. Read existing `/memories/session/rpi/research.md` using the #tool:vscode/memory tool.
+2. Identify which questions already have source-backed answers and which remain open.
+3. Focus new investigation on open questions only. Do not re-research answered topics.
+4. Append new findings to the existing document rather than overwriting. Mark new content with an iteration header: `## Iteration {{N}} — {{focus}}`.
 
 ## Constraints
 
