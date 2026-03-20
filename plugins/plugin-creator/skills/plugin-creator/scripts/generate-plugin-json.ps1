@@ -111,6 +111,14 @@ if (-not $marketplace.plugins -or $marketplace.plugins.Count -eq 0) {
 }
 
 $owner = $marketplace.owner
+$pluginRoot = $null
+
+if ($marketplace.PSObject.Properties['metadata'] -and
+    $marketplace.metadata -and
+    $marketplace.metadata.PSObject.Properties['pluginRoot'] -and
+    $marketplace.metadata.pluginRoot) {
+    $pluginRoot = $marketplace.metadata.pluginRoot
+}
 
 # ── Platform flags ──────────────────────────────────────────────────────────
 
@@ -168,6 +176,48 @@ function Build-PluginJson {
     return $pluginJson
 }
 
+function Normalize-RelativePath {
+    param(
+        [Parameter(Mandatory)] [string]$Path
+    )
+
+    return ($Path -replace '^[.][/\\]+', '').TrimStart([char[]]@([char]'/', [char]92))
+}
+
+function Resolve-PluginDirectory {
+    param(
+        [Parameter(Mandatory)] [string]$RepoRoot,
+        [Parameter(Mandatory)] [string]$SourcePath,
+        [string]$PluginRoot
+    )
+
+    $normalizedSourcePath = Normalize-RelativePath -Path $SourcePath
+    $candidateRelativePaths = New-Object System.Collections.Generic.List[string]
+
+    if ($PluginRoot) {
+        $normalizedPluginRoot = Normalize-RelativePath -Path $PluginRoot
+        $sourceStartsWithPluginRoot =
+            $normalizedSourcePath -ieq $normalizedPluginRoot -or
+            $normalizedSourcePath.StartsWith("$normalizedPluginRoot/", [System.StringComparison]::OrdinalIgnoreCase) -or
+            $normalizedSourcePath.StartsWith("$normalizedPluginRoot\\", [System.StringComparison]::OrdinalIgnoreCase)
+
+        if (-not $sourceStartsWithPluginRoot) {
+            $candidateRelativePaths.Add((Join-Path $normalizedPluginRoot $normalizedSourcePath))
+        }
+    }
+
+    $candidateRelativePaths.Add($normalizedSourcePath)
+
+    foreach ($relativePath in $candidateRelativePaths) {
+        $candidatePath = Join-Path $RepoRoot $relativePath
+        if (Test-Path $candidatePath) {
+            return $candidatePath
+        }
+    }
+
+    return (Join-Path $RepoRoot $candidateRelativePaths[0])
+}
+
 # ── Helper: write or preview a JSON file ────────────────────────────────────
 
 function Write-JsonFile {
@@ -221,7 +271,8 @@ foreach ($entry in $marketplace.plugins) {
         continue
     }
 
-    # Resolve plugin source directory relative to repo root
+    # Resolve plugin source directory relative to metadata.pluginRoot when set,
+    # otherwise relative to repo root.
     $sourcePath = $entry.source
 
     # source can be a string or an object; only process string (relative path) sources
@@ -231,9 +282,7 @@ foreach ($entry in $marketplace.plugins) {
         continue
     }
 
-    # Normalise ./plugins/foo → plugins/foo
-    $relPath = $sourcePath -replace '^\.\/', '' -replace '^\.\\\/', ''
-    $pluginDir = Join-Path $repoRoot $relPath
+    $pluginDir = Resolve-PluginDirectory -RepoRoot $repoRoot -SourcePath $sourcePath -PluginRoot $pluginRoot
 
     if (-not (Test-Path $pluginDir)) {
         Write-Warning "Plugin directory not found for '$pluginName': $pluginDir — skipping."

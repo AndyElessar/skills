@@ -23,7 +23,7 @@
         "prose"
       ],
       "category": "development",
-      "source": "./plugins/meta-prompts"
+      "source": "./meta-prompts"
     },
     {
       "name": "agents-creator",
@@ -39,12 +39,12 @@
       ],
       "category": "development",
       "skills": "./skills",
-      "source": "./plugins/agents-creator"
+      "source": "./agents-creator"
     },
     {
       "name": "plugin-creator",
       "description": "Create and maintain GitHub Copilot CLI and Claude Code plugins and marketplaces, including plugin.json and marketplace.json manifests for both platforms.",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
       "keywords": [
@@ -55,7 +55,7 @@
       ],
       "category": "development",
       "skills": "./skills",
-      "source": "./plugins/plugin-creator"
+      "source": "./plugin-creator"
     },
     {
       "name": "prose-guide",
@@ -71,7 +71,7 @@
       ],
       "category": "development",
       "skills": "./skills",
-      "source": "./plugins/prose-guide"
+      "source": "./prose-guide"
     },
     {
       "name": "dotnet",
@@ -85,7 +85,7 @@
         "csharp"
       ],
       "category": "development",
-      "source": "./plugins/dotnet"
+      "source": "./dotnet"
     },
     {
       "name": "aspire-dev",
@@ -101,7 +101,7 @@
       ],
       "category": "development",
       "skills": "./skills",
-      "source": "./plugins/aspire-dev"
+      "source": "./aspire-dev"
     },
     {
       "name": "rpi-workflow",
@@ -116,7 +116,7 @@
       ],
       "category": "workflow",
       "agents": "./agents",
-      "source": "./plugins/rpi-workflow"
+      "source": "./rpi-workflow"
     }
   ]
 }
