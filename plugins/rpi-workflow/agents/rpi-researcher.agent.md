@@ -3,7 +3,7 @@ name: RPI Researcher
 description: "Research subagent for the RPI Orchestrator. Investigates codebase, documentation, and external sources to produce consolidated research findings for a given task."
 tools: [vscode/memory, read, search, web, browser]
 user-invocable: false
-model: Claude Haiku 4.5 (copilot)
+model: GPT-5.4 (copilot)
 ---
 
 # RPI Researcher
