@@ -84,6 +84,17 @@
       "category": "workflow",
       "agents": "./agents",
       "source": "./rpi-workflow"
+    },
+    {
+      "name": "skill-guide",
+      "description": "Design, write, review, and improve SKILL.md files using proven patterns (Tool Wrapper, Generator, Reviewer, Inversion, Pipeline) with intent-based protocols for creating, reviewing, and improving agent skills.",
+      "version": "1.0.0",
+      "repository": "https://github.com/AndyElessar/skills",
+      "license": "MIT",
+      "keywords": ["skills", "prompts", "meta", "design-patterns", "agents", "SKILL.md"],
+      "category": "development",
+      "skills": "./skills",
+      "source": "./skill-guide"
     }
   ]
 }
