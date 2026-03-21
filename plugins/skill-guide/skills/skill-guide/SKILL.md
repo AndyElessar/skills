@@ -146,72 +146,17 @@ description: "FastAPI development best practices and conventions.
 
 ## The Five Patterns
 
-Each pattern uses the same SKILL.md format but structures content differently. See [references/design-patterns.md](./references/design-patterns.md) for complete examples with templates.
+Each pattern uses the same SKILL.md format but structures content differently.
 
-### Pattern 1: Tool Wrapper
+| Pattern | Purpose | Directories | Complexity | Instruction Style |
+|---|---|---|---|---|
+| **Tool Wrapper** | Expert knowledge about a technology | `references/` | Low | Declarative rules: "Always X" / "Never Y" |
+| **Generator** | Consistent output from a template | `assets/` + `references/` | Medium | Ordered steps: load rules → load template → fill |
+| **Reviewer** | Evaluate against a checklist | `references/` | Medium | Review protocol: load checklist → apply → report |
+| **Inversion** | Gather context before acting | `assets/` | Medium | Phased questions with gates between phases |
+| **Pipeline** | Ordered workflow with validation | All three dirs | High | Gated steps: "Do NOT proceed until confirmed" |
 
-Package a library or tool's conventions, best practices, and coding standards into on-demand knowledge. The agent becomes a domain expert when the skill loads.
-
-| Aspect | Detail |
-|---|---|
-| Purpose | Teach the agent expert knowledge about a specific technology |
-| Directories used | `references/` |
-| Complexity | Low |
-| Instruction style | Declarative rules: "Always X" / "Never Y" / "When Z, do W" |
-
-SKILL.md contains high-level conventions. `references/` holds the detailed rules. No templates, no scripts. This is the simplest and most widely adopted pattern. Start here if you are new to skill design.
-
-### Pattern 2: Generator
-
-Produce documents, reports, or configurations by filling a reusable template. Instructions orchestrate the process: load the style guide, load the template, gather inputs, fill it in.
-
-| Aspect | Detail |
-|---|---|
-| Purpose | Produce consistently structured output from a template |
-| Directories used | `assets/` + `references/` |
-| Complexity | Medium |
-| Instruction style | Ordered steps: "Step 1: Load rules. Step 2: Load template. Step 3: Fill." |
-
-`assets/` holds the output template (the structure to fill). `references/` holds the style guide (quality rules to follow). Swap either file to change the output without modifying the instructions.
-
-### Pattern 3: Reviewer
-
-Evaluate code, content, or artifacts against a checklist stored in `references/`, producing a scored findings report grouped by severity.
-
-| Aspect | Detail |
-|---|---|
-| Purpose | Score and evaluate against a standard |
-| Directories used | `references/` |
-| Complexity | Medium |
-| Instruction style | Review protocol: "Load checklist, apply each rule, classify severity, produce report" |
-
-Separate WHAT to check (the checklist file) from HOW to check (the review protocol in the instructions). Swap the checklist to get a completely different review from the same skill structure.
-
-### Pattern 4: Inversion
-
-Flip the typical agent interaction: instead of the user driving the conversation, the skill instructs the agent to ask structured questions through defined phases before producing any output.
-
-| Aspect | Detail |
-|---|---|
-| Purpose | Gather context from the user before acting |
-| Directories used | `assets/` |
-| Complexity | Medium (multi-turn) |
-| Instruction style | Phased questions: "Phase 1: ask Q1-Q3. Phase 2: ask Q4-Q6." with gates |
-
-The `DO NOT start building until all phases are complete` instruction is the critical gate. Without it, agents jump to conclusions after the first answer.
-
-### Pattern 5: Pipeline
-
-Define a sequential workflow where each step must complete before the next begins, with explicit gate conditions that prevent the agent from skipping validation.
-
-| Aspect | Detail |
-|---|---|
-| Purpose | Enforce a strict, ordered workflow with sign-offs |
-| Directories used | `references/` + `assets/` + `scripts/` |
-| Complexity | High |
-| Instruction style | Gated steps: "Step 1: ... Do NOT proceed until confirmed." |
-
-Gate conditions are the defining feature. Without explicit gates, agents barrel through all steps and skip verification.
+For complete examples, directory layouts, and key design points per pattern, load [references/design-patterns.md](./references/design-patterns.md).
 
 ### Choosing a Pattern
 
@@ -395,5 +340,3 @@ For the complete set of principles, load [references/design-principles.md](./ref
 6. **One concern per skill.** A skill that tries to do everything weakens its activation signal and confuses the agent.
 7. **Explain the why.** Rules backed by reasoning are followed more reliably and generalize better than bare directives.
 8. **Design for composability.** Define clear input expectations and output commitments so the skill works both standalone and as a step in a larger workflow.
-
-
