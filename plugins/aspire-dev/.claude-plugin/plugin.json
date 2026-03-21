@@ -1,7 +1,7 @@
 {
   "name": "aspire-dev",
   "description": "Guide .NET Aspire development, including AppHost setup, integrations, runtime operations, debugging, logs, and distributed traces.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": "https://github.com/AndyElessar/skills",
   "license": "MIT",
   "keywords": [

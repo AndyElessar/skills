@@ -128,13 +128,22 @@ The primary way to run an Aspire application is through the CLI:
 aspire run
 ```
 
+> [!CAUTION]
+> `aspire run` is a **long-running process** that keeps the AppHost alive for the entire session.
+> You **MUST** run it as a **background process** (e.g., `isBackground=true` in `run_in_terminal`).
+> Do **NOT** wait for it to finish, send `Ctrl+C`, or terminate the terminal.
+> The console output will display "Press Ctrl+C to stop" — that message is for human users;
+> as an AI agent, **ignore it and leave the process running**.
+
 This starts the AppHost, which orchestrates all defined resources (projects, containers, executables) and launches the Aspire dashboard for monitoring.
 
 **Important behaviors:**
-- `aspire run` starts all resources defined in the AppHost's `Program.cs`
-- The Aspire dashboard URL is printed to the console (typically `https://localhost:15XXX`)
-- Resources start in dependency order based on `WithReference()` / `WaitFor()` calls
-- Use `Ctrl+C` to gracefully shut down all resources
+
+* `aspire run` starts all resources defined in the AppHost's `Program.cs`
+* The Aspire dashboard URL is printed to the console (typically `https://localhost:15XXX`)
+* Resources start in dependency order based on `WithReference()` / `WaitFor()` calls
+* The process **must remain running** for the application to function; stopping it shuts down all resources
+* After launching in the background, use `get_terminal_output` to check the dashboard URL and startup status
 
 ### Multiple AppHosts
 
@@ -150,6 +159,9 @@ mcp_aspire_select_apphost(appHostPath="src/MyApp.AppHost")  # Select one
 ```bash
 aspire run --launch-profile <profile-name>
 ```
+
+> [!IMPORTANT]
+> All `aspire run` variants are long-running. Always launch them as background processes.
 
 📖 CLI reference: https://aspire.dev/reference/cli/commands/aspire/
 
@@ -275,7 +287,7 @@ Aspire uses automatic service discovery via environment variables. If Service A 
 
 - **Port conflicts**: If a resource fails with "address already in use", another process may be occupying that port
 - **Missing Docker**: Container resources require a container runtime — Aspire will report an error if none is found
-- **Stale state**: After changing `Program.cs`, you need to restart the AppHost (`Ctrl+C` then `aspire run` again)
+- **Stale state**: After changing `Program.cs`, you need to restart the AppHost. Stop the running background terminal, then launch a new `aspire run` background process
 
 ---
 
