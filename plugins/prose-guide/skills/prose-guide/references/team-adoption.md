@@ -15,7 +15,7 @@ The coordination framework follows five phases, each producing artifacts that se
 **Who:** Tech leads, architects
 **What:** Capture team standards as primitives
 
-- Create `.github/copilot-instructions.md` with project-wide rules
+- Create root `AGENTS.md` with project-wide rules
 - Create domain `.instructions.md` files with `applyTo` patterns
 - Configure `.agent.md` files with professional boundaries
 - Package compliance requirements as distributable skills
@@ -62,7 +62,7 @@ apm install acme-corp/security-standards
 ### Phase 5: Implement (Developer + agent execution)
 
 **Who:** Individual developers with agents
-**What:** Execute using `.prompt.md` workflows or async delegation
+**What:** Execute using `SKILL.md` capabilities, `.agent.md` workflows, or async delegation
 
 - Agent follows spec + plan + constitution (`.instructions.md`)
 - Code committed to feature branch, PR opened
@@ -113,12 +113,13 @@ The team gets smarter collectively — compound intelligence that improves throu
 ## Implementation Roadmap
 
 ### Weeks 1-2: Foundation
-- [ ] Create `copilot-instructions.md` with team standards
+- [ ] Create root `AGENTS.md` with team standards
 - [ ] Set up domain `.instructions.md` files
 - [ ] Configure basic agent boundaries
 
 ### Weeks 3-4: Workflows
-- [ ] Create first `.prompt.md` workflows
+- [ ] Create `.prompt.md` files for recurring team tasks
+- [ ] Create first `SKILL.md` capabilities for complex team workflows
 - [ ] Build `.spec.md` templates
 - [ ] Practice spec-first workflow on one feature
 

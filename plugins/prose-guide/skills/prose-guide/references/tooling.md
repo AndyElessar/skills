@@ -144,7 +144,7 @@ jobs:
 
 The progression mirrors every programming ecosystem:
 
-1. **Raw Code** → Agent Primitives (`.prompt.md`, `.instructions.md`)
+1. **Raw Code** → Agent Primitives (`.instructions.md`, `.prompt.md`, `SKILL.md`, `.agent.md`)
 2. **Runtime Environments** → Agent CLI Runtimes (Codex, Claude Code, Copilot CLI)
 3. **Package Management** → APM (distribution and orchestration)
 4. **Thriving Ecosystem** → Shared libraries, community packages

@@ -32,7 +32,7 @@ Review [project conventions](../docs/conventions.md) and
 
 ---
 
-## Custom Agents (`.agent.md` / `.chatmode.md`)
+## Custom Agents (`.agent.md`)
 
 **Purpose:** Role-based expertise with explicit tool boundaries. Like professional licenses — each agent operates within its area of competence.
 
@@ -74,42 +74,43 @@ Review [backend docs](../../docs/backend) for project-specific patterns.
 
 ---
 
-## Agentic Workflows (`.prompt.md`)
+## Prompt Files (`.prompt.md`)
 
-**Purpose:** Reusable multi-step processes that orchestrate primitives into end-to-end solutions.
+**Purpose:** Named, on-demand tasks invoked as `/` slash commands. Best for repeatable one-shot tasks that don't need bundled resources. Prompt files occupy the **task invocation layer** — complementary to Skills, not replaced by them.
+
+**When to use `.prompt.md` vs `SKILL.md`:**
+- `.prompt.md` — lightweight slash command, manual trigger, supports `${variables}`, single file
+- `SKILL.md` — auto-discovered, progressive disclosure, bundles scripts/templates/references in a folder
 
 **Template:**
 ```yaml
 ---
 mode: agent
-model: gpt-4
-tools: ['codebase', 'search', 'problems', 'changes']
-description: 'Feature implementation workflow with validation gates'
+description: 'Review current file for security vulnerabilities'
+tools: ['codebase', 'search', 'problems']
 ---
 ```
 
 ```markdown
-# Feature Implementation from Specification
+# Security Review
 
-## Context Loading Phase
-1. Review [project specification](${specFile})
-2. Analyze [existing patterns](./src/patterns/)
-3. Check [API documentation](./docs/api.md)
+Review ${file} for security vulnerabilities:
 
-## Implementation Phase
-Use semantic search to find similar implementations.
-Follow [coding standards](./docs/standards.md).
+## Checklist
+1. Check for hardcoded secrets and credentials
+2. Identify injection risks and input validation gaps
+3. Verify authentication and authorization checks
+4. Report findings with severity and remediation
 
 ## Structured Output
-- [ ] Feature code in appropriate module
-- [ ] Comprehensive unit tests (>90% coverage)
-- [ ] Integration tests for API endpoints
-- [ ] Documentation updates
-
-## Human Validation Gate
-🚨 STOP: Review implementation plan before proceeding.
-Confirm: Architecture alignment, test strategy, breaking change impact.
+- [ ] Severity classification (Critical / High / Medium / Low)
+- [ ] Remediation recommendations
+- [ ] Confidence assessment
 ```
+
+**Frontmatter fields:** `mode`, `description`, `tools`, `model`, `agent` (delegates to a custom agent), `input` variables.
+
+**Built-in variables:** `${selection}`, `${file}`, `${input:variableName}` for dynamic user input.
 
 ---
 
@@ -217,5 +218,5 @@ How primitives work together for "Implement secure user authentication":
 2. **Instructions loaded** → `security.instructions.md` via `applyTo: "auth/**"`
 3. **Context injected** → `[auth patterns](.memory.md#security)` + `[API standards](api-security.context.md)`
 4. **Spec generated** → `user-auth.spec.md` using structured templates
-5. **Workflow executed** → `implement-from-spec.prompt.md` with validation gates
+5. **Skill activated** → `secure-impl/SKILL.md` with validation gates
 6. **Learning captured** → Update `.memory.md` with patterns discovered

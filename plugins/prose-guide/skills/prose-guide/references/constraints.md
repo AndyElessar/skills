@@ -53,7 +53,8 @@
 
 **Mechanisms:**
 - `.instructions.md` as atomic, targeted rules
-- `.prompt.md` as reusable workflow compositions
+- `.prompt.md` as named, on-demand task invocations
+- `SKILL.md` as packaged domain knowledge and auto-discovered workflows
 - `.agent.md` as bounded capability units
 - Skills as composable capability packages
 - Explicit contracts between agents working in parallel
@@ -74,7 +75,7 @@
 **Why:** LLMs are non-deterministic. Unbounded autonomy + non-determinism = unpredictable, potentially unsafe behavior. Grounding outputs in deterministic tool execution transforms probabilistic generation into verifiable action.
 
 **Mechanisms:**
-- Tool whitelists in agent/chatmode definitions
+- Tool whitelists in agent definitions
 - `applyTo` patterns for context scoping
 - Validation gates requiring human approval before destructive actions
 - MCP tools as truth anchors — code execution, API calls, file operations ground claims in reality
@@ -110,7 +111,6 @@ tools: ['changes', 'codebase', 'editFiles', 'runCommands', 'search']
 - Root `AGENTS.md` → project-wide principles
 - Nested `AGENTS.md` → domain-specific rules
 - `.instructions.md` with `applyTo` patterns → file-type targeting
-- `copilot-instructions.md` → global workspace rules
 
 **Example hierarchy:**
 ```

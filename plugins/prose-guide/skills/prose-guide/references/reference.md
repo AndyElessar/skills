@@ -11,10 +11,11 @@
 ### Implementation Steps
 
 - [ ] Install Skills for your stack: `apm install owner/skill-name`
-- [ ] Create `.github/copilot-instructions.md` with project guidelines
+- [ ] Create root `AGENTS.md` with project guidelines
 - [ ] Set up domain `.instructions.md` files with `applyTo` patterns
 - [ ] Configure custom agents for your tech stack domains
-- [ ] Create first `.prompt.md` with validation checkpoints
+- [ ] Create `.prompt.md` files for recurring on-demand tasks
+- [ ] Create first `SKILL.md` for an auto-discovered capability
 - [ ] Build first `.spec.md` template for feature specifications
 - [ ] Package reusable patterns as a Skill: `apm init skill`
 - [ ] Practice spec-first: plan → implement → test
@@ -25,7 +26,7 @@
 
 | Level | Goal | Key Outcomes |
 |-------|------|-------------|
-| Foundation | Build first primitives | Basic `.instructions.md`, first agent mode, first `.prompt.md` |
+| Foundation | Build first primitives | Basic `.instructions.md`, first `.agent.md`, first `.prompt.md`, first `SKILL.md` |
 | Beginner | Consistent AI interactions | Domain instructions, 3-5 prompt templates, multiple modes |
 | Intermediate | Spec-driven workflows | Spec-first planning, context optimization, session splitting |
 | Advanced | Async agent orchestration | GitHub Coding Agent, parallel workflows, quality gates |
@@ -59,15 +60,15 @@
 
 ### Community Resources
 
-- [Awesome GitHub Copilot](https://github.com/github/awesome-copilot) — Community instructions, prompts, and chat modes
+- [Awesome GitHub Copilot](https://github.com/github/awesome-copilot) — Community instructions, agents, and skills
 
 ### VS Code Copilot Customization
 
 - [Main Customization Guide](https://code.visualstudio.com/docs/copilot/copilot-customization)
-- [Custom Instructions](https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilot-instructionsmd-file) — `.github/copilot-instructions.md`
-- [Modular Instructions](https://code.visualstudio.com/docs/copilot/copilot-customization#_use-instructionsmd-files) — `.instructions.md` with `applyTo`
-- [Prompt Files](https://code.visualstudio.com/docs/copilot/copilot-customization#_prompt-files-experimental) — `.prompt.md`
-- [Custom Chat Modes](https://code.visualstudio.com/docs/copilot/copilot-customization#_custom-chat-modes)
+- [Custom Instructions](https://code.visualstudio.com/docs/copilot/copilot-customization#_use-instructionsmd-files) — `.instructions.md` with `applyTo`
+- [Custom Agents](https://code.visualstudio.com/docs/copilot/copilot-customization#_custom-chat-modes) — `.agent.md` with tool boundaries
+- [Agent Skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills) — `SKILL.md` packaged capabilities
+- [Prompt Files](https://code.visualstudio.com/docs/copilot/customization/prompt-files) — `.prompt.md` reusable prompts
 
 ### GitHub Copilot
 
