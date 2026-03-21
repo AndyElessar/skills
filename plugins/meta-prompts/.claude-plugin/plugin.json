@@ -1,12 +1,14 @@
 {
   "name": "meta-prompts",
-  "description": "Skills for creating, reviewing, rewriting agent prompts — including agent/plugin file authoring and PROSE methodology guidance.",
-  "version": "1.0.0",
+  "description": "Skills for creating, reviewing, and rewriting agent prompts — including agent/plugin file authoring, SKILL.md design, and PROSE methodology guidance.",
+  "version": "1.1.0",
   "repository": "https://github.com/AndyElessar/skills",
   "license": "MIT",
   "keywords": [
     "agents",
     "prompts",
+    "skills",
+    "plugin",
     "meta",
     "prose"
   ],
@@ -14,5 +16,6 @@
   "author": {
     "name": "Andy Elessar",
     "email": "andy090517@gmail.com"
-  }
+  },
+  "skills": "./skills"
 }
