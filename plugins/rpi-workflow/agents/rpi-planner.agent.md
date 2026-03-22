@@ -1,7 +1,7 @@
 ---
 name: RPI Planner
 description: "Planning subagent for the RPI Orchestrator. Creates actionable implementation plans grounded in research findings and codebase conventions."
-tools: [vscode/memory, vscode/askQuestions, read, search, web]
+tools: [vscode/memory, vscode/resolveMemoryFileUri, vscode/askQuestions, read, search, web]
 user-invocable: false
 model: GPT-5.4 (copilot)
 ---

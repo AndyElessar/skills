@@ -1,7 +1,7 @@
 ---
 name: RPI Reviewer
 description: "Review subagent for the RPI Orchestrator. Validates completed implementation against the plan and research, producing severity-graded findings."
-tools: [vscode/memory, execute, read, search, web]
+tools: [vscode/memory, vscode/resolveMemoryFileUri, execute, read, search, web]
 user-invocable: false
 model: GPT-5.4 (copilot)
 ---

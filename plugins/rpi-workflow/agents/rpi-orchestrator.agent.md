@@ -1,7 +1,7 @@
 ---
 name: RPI Orchestrator
 description: "Use when: running a full Research → Plan → Implement → Review workflow for any coding task. Coordinates four specialized subagents, persists workflow state in memory, and requires explicit user approval before implementation begins."
-tools: [vscode/memory, vscode/askQuestions, read, agent, search, web, todo]
+tools: [vscode/memory, vscode/resolveMemoryFileUri, vscode/askQuestions, read, agent, search, web, todo]
 agents: [RPI Researcher, RPI Planner, RPI Implementor, RPI Reviewer]
 argument-hint: "Describe the task to research, plan, implement, and review."
 model: Claude Opus 4.6 (copilot)

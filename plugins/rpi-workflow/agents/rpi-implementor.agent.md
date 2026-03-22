@@ -1,7 +1,7 @@
 ---
 name: RPI Implementor
 description: "Implementation subagent for the RPI Orchestrator. Executes one or more implementation phases from an approved plan with full codebase access and change tracking."
-tools: [vscode/memory, execute, read, edit, search, web]
+tools: [vscode/memory, vscode/resolveMemoryFileUri, execute, read, edit, search, web]
 user-invocable: false
 model: GPT-5.4 (copilot)
 ---
