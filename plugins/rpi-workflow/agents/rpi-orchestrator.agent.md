@@ -82,11 +82,8 @@ Create files at the start of each phase. Update them progressively as subagents 
 ### Phase 3: Implement
 
 1. Read the approved plan from `/memories/session/rpi/plan.md` using the #tool:vscode/memory tool.
-2. Determine execution strategy based on the plan's phases and their dependencies:
-   * **Sequential**: when phases have ordering dependencies, delegate them one at a time.
-   * **Parallel**: when phases are independent, delegate multiple phases simultaneously via separate #tool:agent calls.
-   * **Batched**: when several phases share context or are tightly related, bundle them into a single #tool:agent call to **RPI Implementor**.
-3. For each delegation (single-phase or multi-phase), provide the relevant phase details, the full plan, and research context.
+2. Delegate plan phases to **RPI Implementor** via #tool:agent . Each delegation may cover one or more phases. When multiple phases have no ordering dependencies, delegate them in parallel via separate simultaneous #tool:agent calls.
+3. For each delegation, provide the relevant phase details, the full plan, and research context.
 4. After each subagent returns, verify that `/memories/session/rpi/changes.md` was updated using the #tool:vscode/memory tool.
 5. Process the subagent's output:
    - If **Implementation Decisions** are reported, append them to `/memories/session/rpi/plan-log.md` under a `## User Decisions` section using the #tool:vscode/memory tool.

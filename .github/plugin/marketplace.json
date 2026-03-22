@@ -79,7 +79,7 @@
     {
       "name": "rpi-workflow",
       "description": "Agents for RPI workflow — orchestrator, planner, researcher, implementor, and reviewer — using VS Code memory to manage workflow tasks.",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
       "keywords": ["rpi", "workflow", "agents"],
