@@ -1,7 +1,7 @@
 # Aspire Integrations Guide
 
-> **Latest integration list**: Use `mcp_aspire_list_integrations` or check https://aspire.dev/docs/
-> **Integration docs**: Use `mcp_aspire_get_integration_docs(packageId="...", packageVersion="...")` to get the exact API for your version.
+> **Authoritative integration list**: Use `mcp_aspire_list_integrations` to get the full, up-to-date catalog.
+> **Integration docs**: Use `mcp_aspire_search_docs(query="...")` to find the right doc, then `mcp_aspire_get_doc(slug="...")` to read it.
 
 ## What are Integrations?
 
@@ -15,12 +15,17 @@ Aspire integrations are NuGet packages that add support for external services (d
 ## Adding an Integration
 
 ```bash
-# via CLI
+# Via CLI (interactive — lists available integrations)
+aspire add
+
+# Via CLI (specific integration)
 aspire add redis
 
-# via NuGet (manual)
+# Via NuGet (manual)
 dotnet add package Aspire.Hosting.Redis
 ```
+
+After adding an integration, restart the app with `aspire start` for the new resource to take effect.
 
 ## Common Integration Patterns
 
@@ -33,7 +38,7 @@ builder.AddProject<Projects.Web>("web").WithReference(cache);
 ```
 
 ```csharp
-// In consuming project
+// Consuming project
 builder.AddRedisOutputCache("cache");
 // or
 builder.AddRedisDistributedCache("cache");
@@ -49,7 +54,7 @@ builder.AddProject<Projects.Api>("api").WithReference(postgres);
 ```
 
 ```csharp
-// In consuming project
+// Consuming project
 builder.AddNpgsqlDbContext<MyDbContext>("mydb");
 ```
 
@@ -78,18 +83,19 @@ var sb = builder.AddAzureServiceBus("messaging");
 
 ## Finding Integration APIs
 
-Since Aspire updates frequently, **always check the integration docs** before configuring:
+Since Aspire updates frequently, **always check the docs** before configuring:
 
-```
-mcp_aspire_get_integration_docs(packageId="Aspire.Hosting.Redis", packageVersion="9.0.0")
+```text
+mcp_aspire_search_docs(query="redis integration")    → Find the slug
+mcp_aspire_get_doc(slug="redis-integration")          → Read full API guide
 ```
 
-This returns the latest API shape, configuration options, and usage patterns for that specific version. This is far more reliable than relying on memorized patterns that may be outdated.
+This is far more reliable than relying on memorized patterns that may be outdated.
 
 ## Common Integration NuGet Packages
 
 | Service | Hosting Package | Client Package |
-|---------|----------------|----------------|
+| --- | --- | --- |
 | Redis | `Aspire.Hosting.Redis` | `Aspire.StackExchange.Redis` |
 | PostgreSQL | `Aspire.Hosting.PostgreSQL` | `Aspire.Npgsql` |
 | SQL Server | `Aspire.Hosting.SqlServer` | `Aspire.Microsoft.Data.SqlClient` |
@@ -100,7 +106,7 @@ This returns the latest API shape, configuration options, and usage patterns for
 
 > This table may be incomplete or outdated. Use `mcp_aspire_list_integrations` for the authoritative list.
 
-## Patterns for Integration Configuration
+## Configuration Patterns
 
 ### Persistent volumes (data survives restarts)
 
@@ -122,4 +128,13 @@ var redis = builder.AddRedis("cache")
 var db = builder.AddConnectionString("mydb");
 ```
 
-This reads from configuration (appsettings, environment, secrets) instead of creating a container — useful for production where the database already exists.
+Reads from configuration (appsettings, environment, secrets) instead of creating a container — useful for production where the database already exists.
+
+### Resource MCP tools
+
+Some integrations expose MCP tools for direct interaction (e.g. `WithPostgresMcp()` adds SQL query tools):
+
+```bash
+aspire mcp tools                                              # List available tools
+aspire mcp call <resource> <tool> --input '{"key":"value"}'   # Invoke a tool
+```

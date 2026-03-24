@@ -1,11 +1,34 @@
 # Aspire MCP Tools Reference
 
-This reference covers all available Aspire MCP tools. These tools allow you to interact with a running Aspire AppHost directly from the editor — inspecting resources, viewing logs, executing commands, and diagnosing issues without switching to the dashboard.
+Aspire MCP tools allow you to interact with a running Aspire AppHost directly from the editor — inspecting resources, viewing logs, executing commands, and diagnosing issues without switching to the dashboard or terminal.
 
-## Prerequisites
+## Tool Availability
 
-- An Aspire AppHost must be **running** (via `aspire run`) for most tools to work
-- Exception: `mcp_aspire_list_integrations` and `mcp_aspire_get_integration_docs` work without a running AppHost
+| Requires running AppHost | Does NOT require running AppHost |
+| --- | --- |
+| `mcp_aspire_list_resources` | `mcp_aspire_doctor` |
+| `mcp_aspire_execute_resource_command` | `mcp_aspire_list_integrations` |
+| `mcp_aspire_list_console_logs` | `mcp_aspire_search_docs` |
+| `mcp_aspire_list_structured_logs` | `mcp_aspire_get_doc` |
+| `mcp_aspire_list_traces` | `mcp_aspire_list_docs` |
+| `mcp_aspire_list_trace_structured_logs` | `mcp_aspire_list_apphosts` |
+| `mcp_aspire_select_apphost` | `mcp_aspire_refresh_tools` |
+
+---
+
+## Environment Diagnostics
+
+### `mcp_aspire_doctor`
+
+Diagnose Aspire environment issues. Performs comprehensive checks (SDK version, container runtime, CLI installation, etc.) and returns detailed status (pass/warning/fail) with actionable fix suggestions.
+
+**Use first** — before starting any AppHost, run this to verify the environment is ready.
+
+```
+mcp_aspire_doctor()
+```
+
+CLI equivalent: `aspire doctor`
 
 ---
 
@@ -13,9 +36,7 @@ This reference covers all available Aspire MCP tools. These tools allow you to i
 
 ### `mcp_aspire_list_apphosts`
 
-Lists all AppHost connections detected by the Aspire MCP server. Shows which ones are within the current workspace scope and which are outside.
-
-**When to use:** When the workspace might contain multiple AppHost projects, or to verify whether an AppHost is detected.
+Lists all AppHost connections detected by the Aspire MCP server. Shows which are within the current workspace scope and which are outside.
 
 ```
 mcp_aspire_list_apphosts()
@@ -23,13 +44,10 @@ mcp_aspire_list_apphosts()
 
 ### `mcp_aspire_select_apphost`
 
-Selects which AppHost to target when multiple are running. The path can be fully qualified or relative to workspace root.
-
-**When to use:** After `mcp_aspire_list_apphosts` shows multiple options and you need to pick one.
+Selects which AppHost to target when multiple are detected. Path can be fully qualified or relative to workspace root.
 
 ```
 mcp_aspire_select_apphost(appHostPath="src/MyApp.AppHost")
-mcp_aspire_select_apphost(appHostPath="C:/Projects/MyApp/src/MyApp.AppHost")
 ```
 
 ---
@@ -38,49 +56,46 @@ mcp_aspire_select_apphost(appHostPath="C:/Projects/MyApp/src/MyApp.AppHost")
 
 ### `mcp_aspire_list_resources`
 
-Lists all application resources with comprehensive details: type, running state, source, HTTP endpoints, health status, available commands, environment variables, and relationships.
-
-**When to use:** To get an overview of the application's current state — what's running, what's healthy, what endpoints are available.
+Lists all application resources with comprehensive details.
 
 ```
 mcp_aspire_list_resources()
 ```
 
-**Returned information per resource:**
-- `name` — Resource identifier (used in other MCP calls)
-- `type` — .NET project, container, executable
-- `state` — Running, Stopped, Starting, Failed, FinishedState, etc.
-- `endpoints` — HTTP/HTTPS URLs
-- `healthStatus` — Healthy, Degraded, Unhealthy
-- `commands` — Available commands (e.g., resource-start, resource-stop, resource-restart)
-- `environmentVariables` — Configured env vars (including service discovery entries)
-- `relationships` — Dependencies on other resources
+Returned information per resource:
+
+- **name** — Resource identifier (used in other MCP calls)
+- **type** — .NET project, container, executable
+- **state** — Running, Stopped, Starting, Failed, FinishedState, etc.
+- **endpoints** — HTTP/HTTPS URLs
+- **healthStatus** — Healthy, Degraded, Unhealthy
+- **commands** — Available commands (e.g., resource-start, resource-stop, resource-restart)
+- **environmentVariables** — Configured env vars (including service discovery entries)
+- **relationships** — Dependencies on other resources
+
+CLI equivalent: `aspire describe`
 
 ### `mcp_aspire_execute_resource_command`
 
-Executes a command on a specific resource. Used to start, stop, or restart individual resources without restarting the entire AppHost.
-
-**When to use:** To restart a specific service after code changes, stop a misbehaving resource, or start a manually-managed resource.
+Executes a command on a specific resource. If a resource is currently stopped, use `resource-start` instead of `resource-restart`.
 
 ```
-# Restart a resource
 mcp_aspire_execute_resource_command(resourceName="apiservice", commandName="resource-restart")
-
-# Stop a resource
 mcp_aspire_execute_resource_command(resourceName="cache", commandName="resource-stop")
-
-# Start a stopped resource (don't use "restart" for a currently-stopped resource)
 mcp_aspire_execute_resource_command(resourceName="cache", commandName="resource-start")
 ```
 
-**Built-in commands:**
+Built-in commands:
+
 | Command | Purpose |
-|---------|---------|
+| --- | --- |
 | `resource-start` | Start a stopped resource |
 | `resource-stop` | Gracefully stop a running resource |
 | `resource-restart` | Restart a running resource |
 
-Resources may also expose **custom commands**. Check `mcp_aspire_list_resources` to see what's available.
+Resources may also expose **custom commands** — check `mcp_aspire_list_resources` to see available commands per resource.
+
+CLI equivalent: `aspire resource <resource> start|stop|restart`
 
 ---
 
@@ -88,52 +103,91 @@ Resources may also expose **custom commands**. Check `mcp_aspire_list_resources`
 
 ### `mcp_aspire_list_console_logs`
 
-Returns console output (stdout/stderr) for a resource. Includes output from resource commands like start/stop/restart.
+Returns console output (stdout/stderr) for a resource. Includes output from resource commands.
 
-**When to use:** To diagnose startup failures, unhandled exceptions, or build errors. This is the raw process output.
-
-**Important:** Don't print the full console logs in the response to the user — they can be very verbose. Read them, find the relevant parts, and summarize.
+**Important:** Console logs can be very verbose. Read them to find relevant parts, then **summarize** for the user — never dump the full output.
 
 ```
 mcp_aspire_list_console_logs(resourceName="apiservice")
 ```
 
+- `resourceName` — **Required.** The resource to get logs for.
+
+CLI equivalent: `aspire logs <resource>`
+
 ### `mcp_aspire_list_structured_logs`
 
-Returns structured log entries with severity, category, message, and structured properties. These are the application-level logs emitted via `ILogger`.
-
-**When to use:** To inspect application behavior, find warnings/errors, or understand what the application is doing at runtime.
+Returns structured log entries with severity, category, message, and structured properties (from `ILogger`).
 
 ```
-# Logs for a specific resource
-mcp_aspire_list_structured_logs(resourceName="apiservice")
-
-# Logs for ALL resources (can be noisy)
-mcp_aspire_list_structured_logs()
+mcp_aspire_list_structured_logs(resourceName="apiservice")   # Specific resource
+mcp_aspire_list_structured_logs()                             # All resources (can be noisy)
 ```
+
+- `resourceName` — Optional. Omit to get logs for all resources.
+
+CLI equivalent: `aspire otel logs [resource]`
 
 ### `mcp_aspire_list_traces`
 
-Lists distributed traces across the application. Each trace represents an operation (like an HTTP request) that may span multiple services. Shows trace ID, participating resources, duration, and error status.
-
-**When to use:** To find slow operations, cross-service errors, or understand the call chain of a distributed operation.
+Lists distributed traces across the application. Each trace represents an operation that may span multiple services, showing trace ID, participating resources, duration, and error status.
 
 ```
-# Traces for a specific resource
-mcp_aspire_list_traces(resourceName="apiservice")
-
-# All traces
-mcp_aspire_list_traces()
+mcp_aspire_list_traces(resourceName="apiservice")    # Specific resource
+mcp_aspire_list_traces()                              # All resources
 ```
+
+- `resourceName` — Optional. Omit to get traces for all resources.
+
+CLI equivalent: `aspire otel traces [resource]`
 
 ### `mcp_aspire_list_trace_structured_logs`
 
 Returns structured logs belonging to a specific distributed trace. Each log entry is associated with a span within the trace.
 
-**When to use:** After finding a problematic trace in `mcp_aspire_list_traces`, drill into its logs to understand what happened at each step of the operation. **This should be your first step when investigating a trace** — before looking at broader resource logs.
+**This should be your first step when investigating a trace** — before looking at broader resource logs.
 
 ```
 mcp_aspire_list_trace_structured_logs(traceId="abc123def456")
+```
+
+- `traceId` — **Required.** The trace ID from `mcp_aspire_list_traces`.
+
+CLI equivalent: `aspire otel logs --trace-id <id>`
+
+---
+
+## Documentation Tools
+
+### `mcp_aspire_search_docs`
+
+Searches aspire.dev documentation using keyword-based lexical search. Returns ranked results with titles, slugs, and excerpts.
+
+```
+mcp_aspire_search_docs(query="redis integration", topK=5)
+```
+
+- `query` — **Required.** Use specific terms (API names, feature names) for best results.
+- `topK` — Optional. Number of results (default: 5, max: 10).
+
+### `mcp_aspire_get_doc`
+
+Retrieves full content of a specific documentation page by slug. Optionally filter to a specific section.
+
+```
+mcp_aspire_get_doc(slug="redis-integration")
+mcp_aspire_get_doc(slug="service-discovery", section="Configuration")
+```
+
+- `slug` — **Required.** Use `mcp_aspire_list_docs` or `mcp_aspire_search_docs` to find slugs.
+- `section` — Optional. Heading of a specific section to return.
+
+### `mcp_aspire_list_docs`
+
+Lists all available documentation pages with titles, slugs, and brief summaries.
+
+```
+mcp_aspire_list_docs()
 ```
 
 ---
@@ -142,11 +196,7 @@ mcp_aspire_list_trace_structured_logs(traceId="abc123def456")
 
 ### `mcp_aspire_list_integrations`
 
-Lists all available Aspire hosting integrations — NuGet packages that can be added to an AppHost project to integrate with databases, caches, message brokers, cloud services, etc.
-
-**When to use:** When the user needs to add a new service and wants to know what's available out of the box.
-
-**Does not require a running AppHost.**
+Lists all available Aspire hosting integrations — NuGet packages for databases, caches, message brokers, cloud services, etc.
 
 ```
 mcp_aspire_list_integrations()
@@ -154,49 +204,53 @@ mcp_aspire_list_integrations()
 
 Use `aspire add <integration-name>` to install one.
 
-### `mcp_aspire_get_integration_docs`
+---
 
-Fetches detailed documentation for a specific integration package, including API usage, configuration options, and examples.
+## Utility
 
-**When to use:** Before configuring a new integration — this gives you the exact API for that version, far more reliable than guessing. Also useful when troubleshooting integration-specific issues.
+### `mcp_aspire_refresh_tools`
 
-**Does not require a running AppHost.**
+Requests the MCP server to emit a tools list changed notification so clients re-fetch available tools. Use after adding new resources that expose MCP tools.
 
+```text
+mcp_aspire_refresh_tools()
 ```
-mcp_aspire_get_integration_docs(packageId="Aspire.Hosting.Redis", packageVersion="9.0.0")
-mcp_aspire_get_integration_docs(packageId="Aspire.Hosting.PostgreSQL", packageVersion="9.0.0")
-```
-
-**Tip:** If unsure of the package version, check the project's `*.csproj` files or use `mcp_aspire_list_integrations` to see what's available.
 
 ---
 
-## Common Workflows with MCP Tools
+## Common MCP Workflows
 
-### "What's the current state of my app?"
-
-```
-1. mcp_aspire_list_resources()          → Overview of all resources
-2. Look for any with state != "Running" or health != "Healthy"
-3. For unhealthy ones: mcp_aspire_list_console_logs(resourceName="...")
-```
-
-### "A request is failing across services"
+### Pre-flight: Is the environment ready?
 
 ```
-1. mcp_aspire_list_traces(resourceName="webfrontend")   → Find the failing trace
-2. mcp_aspire_list_trace_structured_logs(traceId="...")  → See what happened at each span
-3. mcp_aspire_list_structured_logs(resourceName="...")   → Broader context if needed
+mcp_aspire_doctor()    → Check for pass/warning/fail on all prerequisites
 ```
 
-### "I want to add PostgreSQL to my app"
+### What's the current state of my app?
 
 ```
-1. mcp_aspire_get_integration_docs(packageId="Aspire.Hosting.PostgreSQL", packageVersion="9.0.0")
-2. Run: aspire add postgres
-3. Update Program.cs following the docs
-4. aspire run
-5. mcp_aspire_list_resources()  → Verify it's running
+1. mcp_aspire_list_resources()                                → Overview of all resources
+2. Look for any with state ≠ "Running" or health ≠ "Healthy"
+3. For unhealthy: mcp_aspire_list_console_logs(resourceName="...")
+```
+
+### A request is failing across services
+
+```
+1. mcp_aspire_list_traces(resourceName="webfrontend")            → Find the failing trace
+2. mcp_aspire_list_trace_structured_logs(traceId="...")          → See what happened at each span
+3. mcp_aspire_list_structured_logs(resourceName="...")           → Broader context if needed
+```
+
+### I want to add PostgreSQL to my app
+
+```
+1. mcp_aspire_search_docs(query="PostgreSQL integration")       → Find the right doc slug
+2. mcp_aspire_get_doc(slug="postgresql-integration")             → Read full setup guide
+3. Run: aspire add postgres
+4. Update Program.cs following the docs
+5. aspire start                                                   → Restart
+6. mcp_aspire_list_resources()                                    → Verify it's running
 ```
 
 ### "Restart just the API service after code changes"
