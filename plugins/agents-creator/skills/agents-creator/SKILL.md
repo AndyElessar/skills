@@ -1,6 +1,6 @@
 ---
 name: agents-creator
-description: "Use when creating, reviewing, rewriting, or debugging `agents.md`, `.github/agents/*.md`, and `*.agent.md` files for any repository. Trigger whenever users mention custom agents, Copilot agents, agent personas, agent boundaries, or project-specific AI behavior in agent files. Also use this skill when users ask about Copilot custom instructions, agent configuration, agent prompt engineering, setting up AI behavior rules for a repository, writing operating manuals for coding agents, or defining what an AI assistant should or shouldn't do in a project — even if they don't explicitly mention 'agents.md'."
+description: "Use when creating, reviewing, rewriting, or debugging `agents.md`, `.github/agents/*.md`, and `*.agent.md` files for any repository. Trigger whenever users mention custom agents, Copilot agents, agent personas, agent boundaries, or project-specific AI behavior in agent files. Also use this skill when users ask about Copilot custom instructions, agent configuration, agent prompt engineering, setting up AI behavior rules for a repository, writing operating manuals for coding agents, or defining what an AI assistant should or shouldn't do in a project — even if they don't explicitly mention 'agents.md'. Do NOT use this skill for implementing application features, writing runtime code, configuring CI/CD pipelines, or general code review unrelated to agent files."
 argument-hint: "goal=<create|review|rewrite> target=<path-to-agent-file> stack=<tech+versions> constraints=<boundaries>"
 user-invocable: true
 ---
@@ -31,16 +31,12 @@ This skill is not responsible for:
 - Implementing application features
 - Refactoring runtime code or tests unless explicitly requested
 
-## Project Knowledge
+## Domain Knowledge
 - Target artifacts: `agents.md`, `.github/agents/*.md`, and `*.agent.md`
-- Reference guidance: https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/
-- Strong agent files put executable commands early, with runnable syntax and flags — the model references these often, so placing them first reduces ambiguity and speeds up execution.
-- Strong agent files use concrete stack details with versions, not generic labels — "React 18 with TypeScript, Vite, and Tailwind CSS" beats "React project" because the model needs exact versions to generate compatible code.
-- Strong agent files include realistic examples of good output and anti-patterns — one real code snippet showing your style beats three paragraphs describing it.
-- Cover six core areas in generated guidance: `Commands`, `Testing`, `Project Structure`, `Code Style`, `Git Workflow`, and `Boundaries`. Analysis of 2,500+ public repos showed that files covering all six areas consistently outperform those that skip any, because these are the areas where agents most often encounter ambiguity.
-- Use a three-tier boundary model: ✅ `Always` / ⚠️ `Ask first` / 🚫 `Never`. This structure prevents destructive mistakes by making safety constraints scannable and unambiguous.
+- Six core areas every agent file should cover: `Commands`, `Testing`, `Project Structure`, `Code Style`, `Git Workflow`, and `Boundaries`. Analysis of 2,500+ public repos showed files covering all six consistently outperform those that skip any.
+- Three-tier boundary model: ✅ `Always` / ⚠️ `Ask first` / 🚫 `Never` — prevents destructive mistakes by making safety constraints scannable and unambiguous.
 - Existing repositories may use alternate section schemas (e.g., `Tools you can use` instead of `Commands`, `Standards` instead of `Code Style`, `Your role` instead of `Persona`). Preserve local conventions and map coverage instead of forcing a rewrite.
-- Common agent types worth building: `docs-agent`, `test-agent`, `lint-agent`, `api-agent`, `dev-deploy-agent`, `security-agent`. Use these as starting points when the user hasn't decided on a specific agent role.
+- Common agent types worth building: `docs-agent`, `test-agent`, `lint-agent`, `api-agent`, `dev-deploy-agent`. Use these as starting points when the user hasn't decided on a specific agent role. A `security-agent` is also a good addition for security-focused repos.
 
 ## Intake Checklist
 Before writing or rewriting an agent file, gather these inputs:
@@ -67,6 +63,8 @@ When performing review-only work, return findings ordered by severity with:
 - `File`: exact path
 - `Issue`: what is unclear, unsafe, or non-executable
 - `Fix`: precise change to make
+
+The skill is done when the user has a complete, validated agent file ready for use — or a prioritized findings report if review-only.
 
 ## Allowed Actions
 - Write or edit `agents.md`, `.github/agents/*.md`, and `*.agent.md`
@@ -95,29 +93,11 @@ Placeholders:
 	- PowerShell: `Get-ChildItem -Path "<ROOT>" -Recurse -File | Where-Object { $_.Name -ieq 'agents.md' -or $_.Name -like '*.agent.md' -or $_.FullName -match '[\\/]\.github[\\/]agents[\\/].+\.md$' }`
 	- Bash: `find "<ROOT>" -type f \( -iname "agents.md" -o -iname "*.agent.md" -o -path "*/.github/agents/*.md" \)`
 
-- Detect section patterns used by existing agent files
-	- PowerShell: `Get-ChildItem -Path "<ROOT>" -Recurse -File | Where-Object { $_.Name -ieq 'agents.md' -or $_.Name -like '*.agent.md' -or $_.FullName -match '[\\/]\.github[\\/]agents[\\/].+\.md$' } | ForEach-Object { $_.FullName; Select-String -Path $_.FullName -Pattern '^## ' | Select-Object -ExpandProperty Line }`
-	- Bash: `find "<ROOT>" -type f \( -iname "agents.md" -o -iname "*.agent.md" -o -path "*/.github/agents/*.md" \) -print0 | while IFS= read -r -d '' f; do echo "$f"; grep -nE '^## ' "$f"; done`
-
-- Inspect frontmatter keys (inside frontmatter block only)
-	- PowerShell: `$content = Get-Content "<TARGET>" -Raw; if ($content -match '(?s)^---\r?\n(.*?)\r?\n---') { $matches[1] -split "`r?`n" | Select-String -Pattern '^(description:|tools:|user-invocable:|name:|argument-hint:|model:|agents:)' }`
-	- Bash: `awk 'f;/^---$/{c++; if(c==1){f=1; next} if(c==2){exit}}' "<TARGET>" | grep -nE '^(description:|tools:|user-invocable:|name:|argument-hint:|model:|agents:)'`
-
-- Verify six-core coverage headings (template mode)
-	- PowerShell: `Select-String -Path "<TARGET>" -Pattern '^## (Commands|Testing|Project Structure|Code Style|Git Workflow|Boundaries)$'`
-	- Bash: `grep -nE '^## (Commands|Testing|Project Structure|Code Style|Git Workflow|Boundaries)$' "<TARGET>"`
-
-- Verify mapped coverage (existing-schema mode)
-	- PowerShell: `Select-String -Path "<TARGET>" -Pattern '^## '`
-	- Bash: `grep -nE '^## ' "<TARGET>"`
-
-- Check that commands include executable syntax
-	- PowerShell: `Select-String -Path "<TARGET>" -Pattern 'build|test|lint|check|verify|publish|deploy'`
-	- Bash: `grep -nE 'build|test|lint|check|verify|publish|deploy' "<TARGET>"`
-
 - Lint markdown
 	- PowerShell: `npx markdownlint "<TARGET>"`
 	- Bash: `npx markdownlint "<TARGET>"`
+
+For additional validation commands (detect section patterns, inspect frontmatter, verify six-core coverage), load [references/commands.md](./references/commands.md).
 
 Never write vague directives such as "run tests" or "use linting tools" without a concrete command.
 
@@ -135,10 +115,10 @@ Use this sequence when drafting or rewriting:
 Encourage iteration: suggest the user start with a minimal viable agent file, use it in practice, and add detail when the agent makes mistakes. The best agent files grow through iteration, not upfront planning.
 
 ## Command Safety
-- Quote all file and directory paths in command examples.
-- Avoid `sh -c` with interpolated filenames.
-- Prefer null-delimited file iteration (`-print0`) when paths may contain spaces.
-- Do not include destructive commands unless the user explicitly requests them.
+- Quote all file and directory paths in command examples — unquoted paths with spaces cause silent failures or operate on wrong files.
+- Avoid `sh -c` with interpolated filenames — this opens injection vectors when file names contain shell metacharacters.
+- Prefer null-delimited file iteration (`-print0`) when paths may contain spaces — newline-delimited iteration breaks on filenames with embedded newlines.
+- Do not include destructive commands unless the user explicitly requests them — accidental `rm -rf` or `git push --force` in agent files can cause irreversible damage.
 
 ## Required Agent Sections
 When creating a new agent file from scratch, default to these headings:
@@ -146,9 +126,9 @@ When creating a new agent file from scratch, default to these headings:
 - `## Persona` or `## Your role` — who the agent is, what it specializes in, what it produces
 - `## Project Knowledge` — tech stack with versions, file structure with read/write annotations
 - `## Commands` (alias: `Tools you can use`) — runnable build/test/lint commands with flags
-- `## Testing` — how to validate the agent's own output
-- `## Code Style` (alias: `Standards`) — naming conventions, formatting rules, and concrete good/bad code examples
-- `## Git Workflow` — commit conventions, branch strategy, PR expectations
+- `## Testing` (alias: `Validation`, `Quality checks`) — how to validate the agent's own output
+- `## Code Style` (alias: `Standards`, `Conventions`) — naming conventions, formatting rules, and concrete good/bad code examples
+- `## Git Workflow` (alias: `Version control`, `Commit conventions`) — commit conventions, branch strategy, PR expectations
 - `## Boundaries` — three-tier ✅ Always / ⚠️ Ask first / 🚫 Never rules
 
 The `Code Style` section should include naming conventions (e.g., camelCase for functions, PascalCase for classes, UPPER_SNAKE_CASE for constants) and at least one concrete good/bad code example pair.
@@ -187,62 +167,8 @@ Fix: Add exact test and lint commands, including flags and the directory scope.
 ```
 
 ### Starter Agent Skeleton
-```markdown
----
-name: docs-agent
-description: Writes and maintains developer-facing documentation for this repository.
----
 
-You are an expert technical writer for this project.
-
-## Your role
-- You are fluent in Markdown and can read TypeScript code
-- You write for a developer audience, focusing on clarity and practical examples
-- Your task: read code from `src/` and generate or update documentation in `docs/`
-
-## Project knowledge
-- **Tech Stack:** <FRAMEWORK> <VERSION>, <LANGUAGE>, <BUNDLER>, <CSS_FRAMEWORK>
-- **File Structure:**
-  - `src/` — Application source code (READ from here)
-  - `docs/` — All documentation (WRITE to here)
-  - `tests/` — Unit and integration tests
-
-## Commands
-- Build docs: `<DOCS_BUILD_COMMAND>`
-- Lint docs: `<DOCS_LINT_COMMAND>`
-
-## Testing
-- Validate links: `<DOCS_TEST_COMMAND>`
-
-## Code Style
-- Prefer concise, example-first explanations.
-- **Naming conventions:** camelCase for functions, PascalCase for classes, UPPER_SNAKE_CASE for constants.
-
-**Good:**
-```typescript
-/// Fetches a user by their unique identifier.
-async function fetchUserById(id: string): Promise<User> {
-  if (!id) throw new Error('User ID required');
-  const response = await api.get(`/users/${id}`);
-  return response.data;
-}
-```
-
-**Bad:**
-```typescript
-async function get(x) {
-  return await api.get('/users/' + x).data;
-}
-```
-
-## Git Workflow
-- Keep changes focused to one docs concern per commit.
-
-## Boundaries
-- ✅ **Always:** Write to `docs/`, follow the style examples, run lint before committing
-- ⚠️ **Ask first:** Major docs reorganization, adding new top-level sections
-- 🚫 **Never:** Modify code in `src/`, edit config files, commit secrets
-```
+For a complete starter template with all six core sections, load [references/starter-skeleton.md](./references/starter-skeleton.md).
 
 ## Boundaries
 

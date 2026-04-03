@@ -31,14 +31,15 @@
     {
       "name": "agents-creator",
       "description": "Create, review, rewrite, and debug repository-specific agents.md, .github/agents/*.md, and *.agent.md files.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
       "keywords": [
         "agents",
         "copilot",
         "prompts",
-        "instructions"
+        "instructions",
+        "meta"
       ],
       "category": "development",
       "skills": "./skills",
@@ -54,7 +55,8 @@
         "plugin",
         "marketplace",
         "copilot",
-        "manifest"
+        "manifest",
+        "meta"
       ],
       "category": "development",
       "skills": "./skills",
