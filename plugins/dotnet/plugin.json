@@ -1,13 +1,15 @@
 {
   "name": "dotnet",
-  "description": "Skills for .NET development, including Aspire distributed-app orchestration, debugging, and documentation.",
-  "version": "1.0.0",
+  "description": "Skills for .NET development, including: Aspire, C# Source Generator",
+  "version": "2.0.0",
   "repository": "https://github.com/AndyElessar/skills",
   "license": "MIT",
   "keywords": [
     "dotnet",
     "aspire",
-    "csharp"
+    "csharp",
+    "source-generator",
+    "analyzer"
   ],
   "category": "development",
   "author": {

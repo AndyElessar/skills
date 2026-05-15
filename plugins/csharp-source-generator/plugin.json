@@ -1,0 +1,19 @@
+{
+  "name": "csharp-source-generator",
+  "description": "Skills for developing C# source generators and analyzers, including code generation, analysis, and optimization techniques.",
+  "version": "1.0.0",
+  "repository": "https://github.com/AndyElessar/skills",
+  "license": "MIT",
+  "keywords": [
+    "csharp",
+    "source-generator",
+    "analyzer",
+    "dotnet"
+  ],
+  "category": "development",
+  "author": {
+    "name": "Andy Elessar",
+    "email": "andy090517@gmail.com"
+  },
+  "skills": "./skills"
+}
