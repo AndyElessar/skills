@@ -1,12 +1,11 @@
 {
   "name": "dotnet",
-  "description": "Skills for .NET development, including: Aspire, C# Source Generator",
+  "description": "Skills for .NET development, including: C# Source Generator",
   "version": "2.0.0",
   "repository": "https://github.com/AndyElessar/skills",
   "license": "MIT",
   "keywords": [
     "dotnet",
-    "aspire",
     "csharp",
     "source-generator",
     "analyzer"

@@ -80,13 +80,12 @@
     },
     {
       "name": "dotnet",
-      "description": "Skills for .NET development, including: Aspire, C# Source Generator",
+      "description": "Skills for .NET development, including: C# Source Generator",
       "version": "2.0.0",
       "repository": "https://github.com/AndyElessar/skills",
       "license": "MIT",
       "keywords": [
         "dotnet",
-        "aspire",
         "csharp",
         "source-generator",
         "analyzer"
@@ -94,22 +93,6 @@
       "category": "development",
       "skills": "./skills",
       "source": "./dotnet"
-    },
-    {
-      "name": "aspire-dev",
-      "description": "Guide .NET Aspire development, including AppHost setup, integrations, runtime operations, debugging, logs, and distributed traces.",
-      "version": "2.0.0",
-      "repository": "https://github.com/AndyElessar/skills",
-      "license": "MIT",
-      "keywords": [
-        "dotnet",
-        "aspire",
-        "apphost",
-        "csharp"
-      ],
-      "category": "development",
-      "skills": "./skills",
-      "source": "./aspire-dev"
     },
     {
       "name": "rpi-workflow",
@@ -143,22 +126,6 @@
       "category": "development",
       "skills": "./skills",
       "source": "./skill-guide"
-    },
-    {
-      "name": "microsoft-webui",
-      "description": "Microsoft WebUI skillset for building and debugging server-first, island-hydrated Web Components with compiled protocol-based SSR, routing workflows, and production-ready .NET host integration.",
-      "version": "1.0.0",
-      "repository": "https://github.com/AndyElessar/skills",
-      "license": "MIT",
-      "keywords": [
-        "web",
-        "ssr",
-        "webui",
-        "web-components"
-      ],
-      "category": "development",
-      "skills": "./skills",
-      "source": "./microsoft-webui"
     },
     {
       "name": "csharp-source-generator",
