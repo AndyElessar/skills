@@ -18,7 +18,7 @@ Click the button to select a plugin!
 | `dotnet` | `MIT` | `dotnet`, `csharp`, `source-generator`, `analyzer` | Skills for .NET development, including: C# Source Generator |
 | `rpi-workflow` | `MIT` | `rpi`, `workflow`, `agents` | Agents for RPI workflow — orchestrator, planner, researcher, implementor, and reviewer — using VS Code memory to manage workflow tasks. |
 | `skill-guide` | `MIT` | `skills`, `prompts`, `meta`, `design-patterns`, `agents`, `SKILL.md` | Design, write, review, and improve `SKILL.md` files using proven patterns (Tool Wrapper, Generator, Reviewer, Inversion, Pipeline) with intent-based protocols for creating, reviewing, and improving agent skills. |
-| `csharp-source-generator` | `MIT` | `csharp`, `source-generator`, `analyzer`, `dotnet` | Skills for developing C# source generators and analyzers, including code generation, analysis, and optimization techniques. |
+| `csharp-source-generator` | `MIT` | `csharp`, `source-generator`, `analyzer`, `dotnet` | Skills for designing, testing, and packaging C# incremental source generators, including pipeline caching, marker attributes, diagnostics, interceptors, and multi-SDK support. |
 
 ## Installation
 

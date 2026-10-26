@@ -4,6 +4,8 @@ Use this when designing, implementing, reviewing, or testing a source generator 
 
 Interceptors first shipped experimentally in .NET 8 and are stable in the .NET 9.0.2xx SDK and later. They still require explicit consumer opt-in through `InterceptorsNamespaces` or the compatibility alias `InterceptorsPreviewNamespaces`.
 
+The generator needs `Microsoft.CodeAnalysis.CSharp` 4.11+ (.NET SDK 8.0.400+) for `GetInterceptableLocation` and the `[InterceptsLocation(int version, string data)]` form. The original `[InterceptsLocation(string path, int line, int column)]` form is deprecated and scheduled for removal; do not generate it. If the package must also support older SDKs, ship interceptor support only in a `roslyn4.11` analyzer folder (see `project-packaging.md`).
+
 ## When to Use Interceptors
 
 Interceptors are appropriate when the generator needs to preserve existing user call sites while replacing the implementation with generated code.
