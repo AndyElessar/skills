@@ -67,8 +67,8 @@ Both files can have identical content.
 | `repository` | `string` | Source repository URL. |
 | `license` | `string` | License identifier (e.g., `"MIT"`, `"Apache-2.0"`). |
 | `keywords` | `string[]` | Search keywords for discoverability. |
-| `category` | `string` | Plugin category. |
-| `tags` | `string[]` | Additional tags. |
+
+⚠️ **Do not put `category` or `tags` in `plugin.json`.** They belong to `marketplace.json` plugin entries only. Claude Code strips them from `plugin.json` (`claude plugin validate` warns), Copilot CLI lists them only for legacy manifests and ignores them under the Agent Plugins 1.0 schema, and APM refuses to deploy ("parks") a Claude plugin whose `plugin.json` contains them.
 
 ### Author Object
 
@@ -118,8 +118,6 @@ These tell the CLI where to find plugin components. All are optional. The CLI us
   "repository": "https://github.com/janedoe/my-dev-tools",
   "license": "MIT",
   "keywords": ["react", "frontend", "testing"],
-  "category": "development",
-  "tags": ["react", "vite", "typescript"],
   "agents": "agents/",
   "skills": ["skills/", "extra-skills/"],
   "commands": "commands/",

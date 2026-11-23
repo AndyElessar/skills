@@ -11,9 +11,12 @@
     Uses marketplace.json as the source of truth — existing files are overwritten.
 
     Fields mapped from marketplace.json plugin entries:
-      name, description, version, author, keywords, category, tags,
+      name, description, version, author, keywords,
       homepage, repository, license,
       agents, skills, commands, hooks, mcpServers, lspServers
+
+    Marketplace-only fields (category, tags) stay in marketplace.json and are
+    not copied into plugin.json.
 
 .PARAMETER MarketplacePath
     Path to marketplace.json. Defaults to .github/plugin/marketplace.json
@@ -127,9 +130,12 @@ $doClaude  = $Target -in @('All', 'Claude')
 
 # ── Metadata fields to copy from marketplace entry to plugin.json ───────────
 
+# 'category' and 'tags' are marketplace-entry-only fields: Claude Code strips
+# them from plugin.json, Copilot's Agent Plugins 1.0 schema ignores them, and
+# APM parks Claude plugins that ship them.
 $metadataFields = @(
     'description', 'version', 'author', 'homepage', 'repository',
-    'license', 'keywords', 'category', 'tags'
+    'license', 'keywords'
 )
 
 $componentFields = @(

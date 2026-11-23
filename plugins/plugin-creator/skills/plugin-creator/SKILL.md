@@ -222,7 +222,7 @@ For the full schema with all fields, see [references/marketplace-json.md](./refe
 
 ### Marketplace as source of truth
 
-When publishing plugins through a marketplace, define complete metadata in the `plugins` array entries of `marketplace.json`. This is what users see when browsing. Each plugin entry can include all metadata fields (`description`, `version`, `author`, `keywords`, `category`, `tags`, etc.) plus component path overrides — the same fields available in `plugin.json`.
+When publishing plugins through a marketplace, define complete metadata in the `plugins` array entries of `marketplace.json`. This is what users see when browsing. Each plugin entry can include all metadata fields (`description`, `version`, `author`, `keywords`, `category`, `tags`, etc.) plus component path overrides. `category` and `tags` are marketplace-only: keep them out of `plugin.json`, where Claude Code strips them and APM refuses to deploy the plugin.
 
 **Copilot CLI**: marketplace entry takes priority over `plugin.json` for discoverability.
 
